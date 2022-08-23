@@ -19,7 +19,7 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/inicio/">Inicio</a></li>
                 <li><a class="modal-trigger" href="#modal1">Intercambio</a></li>
-                <li><a href="/bonos/">Bonificaciones</a></li>
+                <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
             </ul>
         </div>
     </nav>
@@ -77,29 +77,30 @@
         <div class="modal-content">
             <div class="container">
                 <div class="row">
-                    <form class="col s12">
+                    <form class="col s12" action="/intercambio/{{name}}" method="POST">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">account_circle</i>
-                                <input id="icon_prefix" type="text" class="validate">
+                                <input id="icon_prefix" type="text" name="nombreEmpresa" value="{{name}}" class="validate" autofocus>
                                 <label for="icon_prefix">Nombre de la empresa</label>
                             </div>
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">favorite</i>
-                                <select>
+                                <select id="select" name="tipoMaterial" autofocus>
                                     <option value="1">Plástico</option>
                                     <option value="2">Vidrio</option>
-                                    <option value="2">Cartón - Papel</option>
-                                    <option value="3">Metal</option>
+                                    <option value="3">Cartón - Papel</option>
+                                    <option value="4">Metal</option>
                                 </select>
                                 <label>Tipo de Material</label>
                             </div>
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">insert_comment</i>
-                                <input id="icon_prefix" type="number" class="validate">
+                                <input id="icon_prefix" type="number" class="validate" name="peso" autofocus>
                                 <label for="icon_prefix">Peso en kilogramos</label>
                             </div>
-                            <center><a href="#!" class="modal-close btn" style="background-color:#2d572c;">Enviar</a></center>
+                            <center><button id="submit" class="modal-close btn" style="background-color:#2d572c;">Enviar</button></center>
                         </div>
                     </form>
                 </div>

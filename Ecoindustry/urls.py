@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from appEcoindustry.views import inicio, bonos
+from appEcoindustry.views import inicio, bonos, intercambio, redimir
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('inicio/', inicio),
-    path('bonos/', bonos),
+    path('bonos/<name>', bonos),
+    path('intercambio/<name>', intercambio),
+    path('redimir/<name>/<int:puntosbono>', redimir),
 ]
