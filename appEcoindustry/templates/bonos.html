@@ -39,29 +39,27 @@
         </div>
         </form>
     </div>
-
-    {%for bonificacion in bono%}
-        <div class="column">
-            <div class="col s12 m3">
-                <div class="card">
-                    <div class="card-image">
-                        <img
-                            src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
-                            <form action="/redimir/{{name}}/{{bonificacion.valor}}" method="POST" onsubmit="return openmodal()">
-                                {% csrf_token %}
-                                <button id="submit" class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
-                                    class="material-icons">add</i></button>
-                            </form>
-                    </div>
-                    <div class="card-content">
-                        <p>{{bonificacion.nombre}}</p>
-                        <p>Valor: {{bonificacion.valor}} Puntos</p>
+    <div class="row">
+        {%for bonificacion in bono%}
+                <div class="col s12 m3">
+                    <div class="card">
+                        <div class="card-image">
+                            <img
+                                src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
+                                <form action="/redimir/{{name}}/{{bonificacion.valor}}" method="POST" onsubmit="return openmodal()">
+                                    {% csrf_token %}
+                                    <button id="submit" class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
+                                        class="material-icons">add</i></button>
+                                </form>
+                        </div>
+                        <div class="card-content">
+                            <p>{{bonificacion.nombre}}</p>
+                            <p>Valor: {{bonificacion.valor}} Puntos</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    {% endfor %}
-
+        {% endfor %}
+    </div>
     <script>  document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.carousel');
             var instances = M.Carousel.init(elems);
