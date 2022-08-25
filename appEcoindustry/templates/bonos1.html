@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bonificaciones</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+
+<body>
+
+
+    <nav>
+        <div class="nav-wrapper" style="background-color: #363636;">
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/inicio/">Inicio</a></li>
+                <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
+                <li><a class="modal-trigger" href="#modal2">Grupo Familia</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modal Structure -->
+    <div id="modal2" class="modal">
+        <div class="modal-content center">
+            <p>Tienes: {{cantidad}} Puntos</p>
+        </div>
+        </form>
+    </div>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content center">
+            <h5>Buena elección</h5>
+            <p>Podrás recoger tu bien en nuestras instalaciones. ¡Te esperamos!</p>
+            <p>Tu puntaje actual: 3000</p>
+        </div>
+        </form>
+    </div>
+
+
+    <div class="row">
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img
+                        src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
+                        <form action="/redimir/{{name}}/{{mesa.valor}}" method="POST" onsubmit="return openmodal()">
+                            {% csrf_token %}
+                            <button id="submit" class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
+                                class="material-icons">add</i></button>
+                        </form>
+                        <!--<a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
+                            class="material-icons">add</i></a> -->
+                </div>
+                <div class="card-content">
+                    <p>{{mesa.nombre}}</p>
+                    <p>Valor: {{mesa.valor}} Puntos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img src="https://lamparasfokuss.com/wp-content/uploads/2020/07/Lampara-Omega-Spot-1L.jpg">
+                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
+                        class="material-icons">add</i></a>
+                </div>
+                <div class="card-content">
+                    <p>{{lampara.nombre}}</p>
+                    <p>Valor: {{lampara.valor}} Puntos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img
+                        src="https://d3ugyf2ht6aenh.cloudfront.net/stores/399/204/products/caneca-metalica-circular-en-malla-negra-de-35-cm-2-7701016759267-papelera-malla1-ed8efe5d2532cc8b2c15124507729198-320-0.jpg">
+                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
+                            class="material-icons">add</i></a>
+                </div>
+                <div class="card-content">
+                    <p>{{papelera.nombre}}</p>
+                    <p>Valor: {{papelera.valor}} Puntos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img
+                        src="https://www.ferreteriasamir.com/12985-large_default/silla-rimax-baru-con-brazo-color-mocca.jpg">
+                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
+                            class="material-icons">add</i></a>
+                </div>
+                <div class="card-content center">
+                    <p>{{silla.nombre}}</p>
+                    <p>Valor: {{silla.valor}} Puntos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row center">
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img
+                        src="https://cdn.shopify.com/s/files/1/0445/6716/7139/products/Set-Mesas-Neusa-Blanca_KITNEU-02-1_500x.jpg?v=1635277632">
+                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
+                            class="material-icons">add</i></a>
+                </div>
+                <div class="card-content">
+                    <p>{{mesa.nombre}}</p>
+                    <p>Valor: {{mesa.valor}} Puntos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img src="https://falabella.scene7.com/is/image/FalabellaCO/6737692_7?wid=800&hei=800&qlt=70">
+                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
+                        class="material-icons">add</i></a>
+                </div>
+                <div class="card-content">
+                    <p>{{lampara.nombre}}</p>
+                    <p>Valor: {{lampara.valor}} Puntos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img
+                        src="https://www.franciscosegarra.com/wp-content/uploads/2019/01/sillas-mimbre.jpg">
+                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
+                            class="material-icons">add</i></a>
+                </div>
+                <div class="card-content">
+                    <p>{{papelera.nombre}}</p>
+                    <p>Valor: {{papelera.valor}} Puntos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m3">
+            <div class="card">
+                <div class="card-image">
+                    <img
+                        src="https://cdn.shopify.com/s/files/1/0256/2677/1531/products/Flim-papelera@2x.jpg?v=1574278040">
+                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
+                            class="material-icons">add</i></a>
+                </div>
+                <div class="card-content center">
+                    <p>{{silla.nombre}}</p>
+                    <p>Valor: {{silla.valor}} Puntos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>  document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.carousel');
+            var instances = M.Carousel.init(elems);
+        });
+
+        // Or with jQuery
+
+        $(document).ready(function () {
+            $('.carousel').carousel();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems);
+        });
+
+        // Or with jQuery
+
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+    </script>
+    <script>  document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+
+        // Or with jQuery
+
+        $(document).ready(function () {
+            $('select').formSelect();
+        });</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        function openmodal(){
+            alert("Buena elección\nPodrás recoger tu bien en nuestras instalaciones. ¡Te esperamos!")
+            //alert("Podrás recoger tu bien en nuestras instalaciones. ¡Te esperamos!")            
+            //console.log(document.getElementById("modal3").innerHTML;)
+            const openEls = document.querySelectorAll("[data-open]");
+            const isVisible = "is-visible";
+
+            for(const el of openEls) {
+                el.addEventListener("click", function() {
+                    const modalId = this.dataset.open;
+                    document.getElementById(modal3).classList.add(isVisible);
+                });
+            }
+
+            isVisible = "is-visible";
+
+            document.addEventListener("click", e => {
+                if (e.target == document.querySelector(".modal.is-visible")) {
+                    document.querySelector(".modal.is-visible").classList.remove(isVisible);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

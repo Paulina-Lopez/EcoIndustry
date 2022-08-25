@@ -17,7 +17,7 @@
         <div class="nav-wrapper" style="background-color: #363636;">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/inicio/">Inicio</a></li>
-                <li><a href="/bonos/">Bonificaciones</a></li>
+                <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
                 <li><a class="modal-trigger" href="#modal2">Grupo Familia</a></li>
             </ul>
         </div>
@@ -26,7 +26,7 @@
     <!-- Modal Structure -->
     <div id="modal2" class="modal">
         <div class="modal-content center">
-            <p>Tienes: 79800 Puntos</p>
+            <p>Tienes: {{cantidad}} Puntos</p>
         </div>
         </form>
     </div>
@@ -40,123 +40,27 @@
         </form>
     </div>
 
-
-    <div class="row">
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>Silla EcoPlástica</p>
-                    <p>Valor: 5000 Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img src="https://lamparasfokuss.com/wp-content/uploads/2020/07/Lampara-Omega-Spot-1L.jpg">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                        class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>Silla EcoPlástica</p>
-                    <p>Valor: 5000 Puntos</p>
+    {%for bonificacion in bono%}
+        <div class="column">
+            <div class="col s12 m3">
+                <div class="card">
+                    <div class="card-image">
+                        <img
+                            src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
+                            <form action="/redimir/{{name}}/{{bonificacion.valor}}" method="POST" onsubmit="return openmodal()">
+                                {% csrf_token %}
+                                <button id="submit" class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
+                                    class="material-icons">add</i></button>
+                            </form>
+                    </div>
+                    <div class="card-content">
+                        <p>{{bonificacion.nombre}}</p>
+                        <p>Valor: {{bonificacion.valor}} Puntos</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://d3ugyf2ht6aenh.cloudfront.net/stores/399/204/products/caneca-metalica-circular-en-malla-negra-de-35-cm-2-7701016759267-papelera-malla1-ed8efe5d2532cc8b2c15124507729198-320-0.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>Silla EcoPlástica</p>
-                    <p>Valor: 5000 Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://www.ferreteriasamir.com/12985-large_default/silla-rimax-baru-con-brazo-color-mocca.jpg">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content center">
-                    <p>Silla EcoPlástica</p>
-                    <p>Valor: 5000 Puntos</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>Silla EcoPlástica</p>
-                    <p>Valor: 5000 Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img src="https://lamparasfokuss.com/wp-content/uploads/2020/07/Lampara-Omega-Spot-1L.jpg">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                        class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>Silla EcoPlástica</p>
-                    <p>Valor: 5000 Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://d3ugyf2ht6aenh.cloudfront.net/stores/399/204/products/caneca-metalica-circular-en-malla-negra-de-35-cm-2-7701016759267-papelera-malla1-ed8efe5d2532cc8b2c15124507729198-320-0.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>Silla EcoPlástica</p>
-                    <p>Valor: 5000 Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://www.ferreteriasamir.com/12985-large_default/silla-rimax-baru-con-brazo-color-mocca.jpg">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content center">
-                    <p>Silla EcoPlástica</p>
-                    <p>Valor: 5000 Puntos</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    {% endfor %}
 
     <script>  document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.carousel');
@@ -192,6 +96,30 @@
             $('select').formSelect();
         });</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        function openmodal(){
+            alert("Buena elección\nPodrás recoger tu bien en nuestras instalaciones. ¡Te esperamos!")
+            //alert("Podrás recoger tu bien en nuestras instalaciones. ¡Te esperamos!")            
+            //console.log(document.getElementById("modal3").innerHTML;)
+            const openEls = document.querySelectorAll("[data-open]");
+            const isVisible = "is-visible";
+
+            for(const el of openEls) {
+                el.addEventListener("click", function() {
+                    const modalId = this.dataset.open;
+                    document.getElementById(modal3).classList.add(isVisible);
+                });
+            }
+
+            isVisible = "is-visible";
+
+            document.addEventListener("click", e => {
+                if (e.target == document.querySelector(".modal.is-visible")) {
+                    document.querySelector(".modal.is-visible").classList.remove(isVisible);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
