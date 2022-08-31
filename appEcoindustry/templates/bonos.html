@@ -45,7 +45,7 @@
                     <div class="card">
                         <div class="card-image">
                             <img
-                                src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
+                                src="{{bonificacion.imagen}}">
                                 <form action="/redimir/{{name}}/{{bonificacion.valor}}" method="POST" onsubmit="return openmodal()">
                                     {% csrf_token %}
                                     <button id="submit" class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i

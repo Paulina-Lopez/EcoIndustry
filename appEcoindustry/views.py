@@ -9,15 +9,9 @@ def inicio(request):
 def bonos(request, name):
     puntos = Puntos_Usuarios.objects.all().values()
     cantidadp= puntos[0]['cantidad']
-    bonificacion=Bonificacion.objects.all().values()
-    bonificacion1=Bonificacion.objects.all()
-    bono1=bonificacion[0]
-    bono2=bonificacion[1]
-    bono3=bonificacion[2]
-    bono4=bonificacion[3]
+    bonificacion=Bonificacion.objects.all()
     
-    
-    return render(request, 'bonos.html', {"name": name, "mesa":bono1, "lampara": bono2, "papelera":bono3, "silla":bono4, "cantidad": cantidadp, "bono": bonificacion1})
+    return render(request, 'bonos.html', {"name": name, "cantidad": cantidadp, "bono": bonificacion})
 
 def intercambio(request, name):
     formulario = request.POST.dict()
@@ -52,6 +46,7 @@ def redimir(request, name, puntosbono):
     list_objetos_puntos = objeto_puntos[0]
     cantidad_objetos_puntos = list_objetos_puntos['cantidad']
     if(cantidad_objetos_puntos < puntosbono):
+        messages.info(request, 'Your password has been changed successfully!')
         print("no redimió")
         return redirect('/bonos/%s' %(name))
     else:

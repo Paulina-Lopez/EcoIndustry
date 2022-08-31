@@ -18,7 +18,7 @@ class Bonificacion(models.Model):
     idbonificacion = models.AutoField(primary_key=True, null=False)
     nombre= models.CharField(max_length=30,null=False)
     valor = models.IntegerField(null=False, unique=False)
-    cantidad = models.IntegerField(null=False, unique=False)
+    imagen = models.CharField(max_length=300,null=False)
 
 class Usuario_Bonificacion(models.Model):
     identificacion = models.ForeignKey(Usuario, on_delete=models.CASCADE)
