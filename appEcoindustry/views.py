@@ -116,7 +116,3 @@ def ingresar(request):
 
 def administrador(request):
     return render(request, 'admin.html')   
-
-git remote add origin https://github.com/Paulina-Lopez/EcoIndustryNew.git
-git branch -M main
-git push -u origin main
