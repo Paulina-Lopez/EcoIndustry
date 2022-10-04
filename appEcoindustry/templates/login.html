@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ingresar</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+
+
+    <nav>
+        <div class="nav-wrapper" style="background-color: #363636;">
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/">Inicio</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="contenedor-form">
+        <div class="toggle">
+            <span>Crear cuenta</span>
+        </div>
+        <div class="formulario">
+            <h2>Iniciar Sesión</h2>
+            <form action="/signin/" method="POST">
+                {% csrf_token %}
+                <input type="text" name="nombreEmpresa" id="nombreEmpresa" placeholder="Nombre de la empresa" required>
+                <input type="password" name="clave" id="clave" placeholder="Contraseña" required>
+                <input type="submit" value="Iniciar Sesión">
+            </form>
+        </div>
+        <div class="formulario">
+            <h2>Crea tu cuenta</h2>
+            <form action="/registro/" method="POST" onsubmit="return openmodal2()">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col s6"> <input type="text" name="nombreEmpresa" placeholder="Nombre" required></div>
+                    <div class="col s6"> <input type="text" name="NIT" placeholder="NIT" required>
+                    </div>
+                    <div class="row">
+                        <div class="col s6"> <input type="email" name="correo" placeholder="Email" required></div>
+                        <div class="col s6"> <input type="password" name="clave" placeholder="Contraseña" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12"> <input type="text" name="direccion" placeholder="Dirección" required>
+                        </div>
+                    </div>
+                    <input type="submit" value="Registrarse">
+                    <input style="display: none;" value="1" type="number" class="validate" name="idtipousuario"
+                        autofocus>
+            </form>
+        </div>
+    </div>
+    <div class="reset-password">
+        <a href="#" class="transparent btn-flat modal-trigger">¿Olvidaste tu contraseña?</a>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        }); 
+    </script>
+    <script>
+        function openmodal2() {
+            alert("Tu empresa fue registrada con éxito.\n¡Bienvenido a EcoIndustry!")
+        }
+    </script>
+    <script src="{% static 'js/login.js' %}?version=2" type="text/javascript"></script>
+
+
+</body>
+
+</html>

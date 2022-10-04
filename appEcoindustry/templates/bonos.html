@@ -7,7 +7,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    {% load static %}
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
 </head>
 
 <body>
@@ -16,16 +17,17 @@
     <nav>
         <div class="nav-wrapper" style="background-color: #363636;">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/inicio/">Inicio</a></li>
-                <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
-                <li><a class="modal-trigger" href="#modal2">Grupo Familia</a></li>
+                <li><a href="/">Inicio</a></li>
+                <li><a class="modal-trigger" href="#modal2">{{name}}</a></li>
             </ul>
         </div>
     </nav>
 
+
     <!-- Modal Structure -->
     <div id="modal2" class="modal">
         <div class="modal-content center">
+            <h6>Tu puntaje</h6>
             <p>Tienes: {{cantidad}} Puntos</p>
         </div>
         </form>
@@ -40,128 +42,47 @@
         </form>
     </div>
 
-
     <div class="row">
+        {%for bonificacion in bono%}
+        {% if cantidad >= bonificacion.valor %}
         <div class="col s12 m3">
             <div class="card">
                 <div class="card-image">
-                    <img
-                        src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
-                        <form action="/redimir/{{name}}/{{mesa.valor}}" method="POST" onsubmit="return openmodal()">
-                            {% csrf_token %}
-                            <button id="submit" class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
+                    <img src="{{bonificacion.imagen}}">
+                    <form action="/redimir/{{name}}/{{bonificacion.valor}}" method="POST" onsubmit="return openmodal()">
+                        {% csrf_token %}
+                        <button id="submit"
+                            class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
                                 class="material-icons">add</i></button>
-                        </form>
-                        <!--<a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a> -->
+                    </form>
                 </div>
                 <div class="card-content">
-                    <p>{{mesa.nombre}}</p>
-                    <p>Valor: {{mesa.valor}} Puntos</p>
+                    <p>{{bonificacion.nombre}}</p>
+                    <p>Valor: {{bonificacion.valor}} Puntos</p>
                 </div>
             </div>
         </div>
+        {% else %}
         <div class="col s12 m3">
             <div class="card">
                 <div class="card-image">
-                    <img src="https://lamparasfokuss.com/wp-content/uploads/2020/07/Lampara-Omega-Spot-1L.jpg">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                        class="material-icons">add</i></a>
+                    <img src="{{bonificacion.imagen}}">
+                    <form action="/redimir/{{name}}/{{bonificacion.valor}}" method="POST" onsubmit="return openmodal1()">
+                        {% csrf_token %}
+                        <button id="submit"
+                            class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
+                                class="material-icons">add</i></button>
+                    </form>
                 </div>
                 <div class="card-content">
-                    <p>{{lampara.nombre}}</p>
-                    <p>Valor: {{lampara.valor}} Puntos</p>
+                    <p>{{bonificacion.nombre}}</p>
+                    <p>Valor: {{bonificacion.valor}} Puntos</p>
                 </div>
             </div>
         </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://d3ugyf2ht6aenh.cloudfront.net/stores/399/204/products/caneca-metalica-circular-en-malla-negra-de-35-cm-2-7701016759267-papelera-malla1-ed8efe5d2532cc8b2c15124507729198-320-0.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>{{papelera.nombre}}</p>
-                    <p>Valor: {{papelera.valor}} Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://www.ferreteriasamir.com/12985-large_default/silla-rimax-baru-con-brazo-color-mocca.jpg">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content center">
-                    <p>{{silla.nombre}}</p>
-                    <p>Valor: {{silla.valor}} Puntos</p>
-                </div>
-            </div>
-        </div>
+        {% endif %}
+        {% endfor %}
     </div>
-
-    <div class="row">
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://admin.elgigantedelhogar.com/backend/admin/backend/web/archivosDelCliente/items/images/Muebles-Sillas-y-Organizacion--Mesas-y-Escritorios-Mesa-Eterna-Wengue-Rimax-26820211229161402.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>{{mesa.nombre}}</p>
-                    <p>Valor: {{mesa.valor}} Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img src="https://lamparasfokuss.com/wp-content/uploads/2020/07/Lampara-Omega-Spot-1L.jpg">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                        class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>{{lampara.nombre}}</p>
-                    <p>Valor: {{lampara.valor}} Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://d3ugyf2ht6aenh.cloudfront.net/stores/399/204/products/caneca-metalica-circular-en-malla-negra-de-35-cm-2-7701016759267-papelera-malla1-ed8efe5d2532cc8b2c15124507729198-320-0.jpg">
-                        <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>{{papelera.nombre}}</p>
-                    <p>Valor: {{papelera.valor}} Puntos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m3">
-            <div class="card">
-                <div class="card-image">
-                    <img
-                        src="https://www.ferreteriasamir.com/12985-large_default/silla-rimax-baru-con-brazo-color-mocca.jpg">
-                    <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal3"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <div class="card-content center">
-                    <p>{{silla.nombre}}</p>
-                    <p>Valor: {{silla.valor}} Puntos</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <script>  document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.carousel');
@@ -198,28 +119,18 @@
         });</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
-        function openmodal(){
-            alert("Buena elección\nPodrás recoger tu bien en nuestras instalaciones. ¡Te esperamos!")
-            //alert("Podrás recoger tu bien en nuestras instalaciones. ¡Te esperamos!")            
-            //console.log(document.getElementById("modal3").innerHTML;)
-            const openEls = document.querySelectorAll("[data-open]");
-            const isVisible = "is-visible";
-
-            for(const el of openEls) {
-                el.addEventListener("click", function() {
-                    const modalId = this.dataset.open;
-                    document.getElementById(modal3).classList.add(isVisible);
-                });
-            }
-
-            isVisible = "is-visible";
-
-            document.addEventListener("click", e => {
-                if (e.target == document.querySelector(".modal.is-visible")) {
-                    document.querySelector(".modal.is-visible").classList.remove(isVisible);
-                }
-            });
+        function openmodal() {
+            alert("Buena elección\nPodrás recoger tu bonificación en nuestras instalaciones. ¡Te esperamos!")
         }
+        function openmodal1() {
+            alert("No tienes suficientes puntos\nRedime más materiales para poder canjear.")
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+        });
     </script>
 </body>
 
