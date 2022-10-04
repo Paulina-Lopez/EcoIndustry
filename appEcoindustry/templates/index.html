@@ -14,18 +14,26 @@
 <body>
 
 
-
     <nav>
         <div class="nav-wrapper" style="background-color: #363636;">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/">Inicio</a></li>
+                <li><a href="/inicio/">Inicio</a></li>
+                {% if name %}
                 <li><a class="modal-trigger" href="#modal1">Intercambio</a></li>
                 <li><a class="modal-trigger" href="#modal4">Agenda</a></li>
                 <li><a class="modal-trigger" href="#modal6">Bonificaciones</a></li>
-                <li><a href="ingresar/">Ingresar</a></li>
+                <li><a class='dropdown-trigger' data-target='dropdown1'>{{name}}</a></li>
+                {% else %}
+                <li><a href="/verCatalogo/">Catálogo</a></li>
+                <li><a href="/signin/">Ingresar</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
+    <!-- Dropdown Structure -->
+    <ul id='dropdown1' class='dropdown-content'>
+        <li><a href="/signout/">Cerrar Sesión</a></li>
+    </ul>
 
     <div class="parallax-container">
         <div class="parallax"><img src="https://i.postimg.cc/HL7LF7Zh/Dise-o-sin-t-tulo.png">
@@ -84,7 +92,7 @@
         <div class="modal-content">
             <div class="container">
                 <div class="row">
-                    <form class="col s12" action="/intercambio/" method="POST" onsubmit="return openmodal3()">
+                    <form class="col s12" action="/intercambio/{{name}}" method="POST" onsubmit="return openmodal3()">
                         {% csrf_token %}
                         <div class="row">
                             <div class="input-field col s12">
@@ -272,6 +280,16 @@
         $(document).ready(function () {
             $('.parallax').parallax();
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+            });
+        
+            // Or with jQuery
+        
+            $('.dropdown-trigger').dropdown();
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

@@ -4,11 +4,17 @@ from .models import Comentario, TipoUsuario, Usuario, Puntos_Usuarios, Bonificac
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
+def iniciop(request, name):
+    #empresa = Usuario.objects.all().values()
+    #nombreusuario = empresa[0]
+    usuario = Usuario.objects.filter(nombreEmpresa = name)
+    return render(request, 'index.html', {"name":name,"usuario": usuario})
+
 def inicio(request):
-    empresa = Usuario.objects.all().values()
-    usuario = Usuario.objects.all()
-    nombreusuario = empresa[0]
-    return render(request, 'index.html', {"name":nombreusuario["nombreEmpresa"],"usuario": usuario})
+    #empresa = Usuario.objects.all().values()
+    #nombreusuario = empresa[0]
+    #usuario = Usuario.objects.filter(nombreEmpresa = name)
+    return render(request, 'index.html')
 
 def bonos(request, name):
     empresas  = Usuario.objects.all()
@@ -22,13 +28,19 @@ def bonos(request, name):
     bonificacion=Bonificacion.objects.all()
     return render(request, 'bonos.html', {"name":name, "cantidad": cantidadp, "bono": bonificacion, "empresas": empresas})
 
-def verCatalogo(request):
-    print(request.POST.dict())
-    return redirect('/bonos/%s' %(request.POST.dict()["nombreEmpresa"])) 
+def bonos1(request):
+    bonificacion=Bonificacion.objects.all()
+    return render(request, 'bonos.html', {"bono": bonificacion})
 
-def intercambio(request):
+def verCatalogo(request):
+    if request.method == 'POST':
+        return redirect('/bonos/%s' %(request.POST.dict()["nombreEmpresa"])) 
+    return redirect('/bonos1/')
+
+
+def intercambio(request, name):
     formulario = request.POST.dict()
-    empresa = Usuario.objects.filter(nombreEmpresa = formulario['nombreEmpresa']).values()
+    empresa = Usuario.objects.filter(nombreEmpresa = name).values()
     id_empresa = empresa[0]
     id_empresa = id_empresa["id"]
     objeto_puntos = Puntos_Usuarios.objects.filter(identificacion = id_empresa).values()
@@ -48,7 +60,7 @@ def intercambio(request):
     suma = puntos + cantidad_puntos
     o_p = Puntos_Usuarios.objects.filter(identificacion_id = id_empresa).values()
     o_p.update(cantidad=suma)
-    return redirect('/')
+    return redirect('/inicio/%s' %(name))
 
 def redimir(request, name, puntosbono):
     usuario=Usuario.objects.filter(nombreEmpresa=name)
@@ -95,28 +107,27 @@ def agenda(request):
     idEmpresa= Usuario.objects.get(nombreEmpresa = request.POST['nombreEmpresa'])   
     agenda = Agenda(identificacion = idEmpresa, fechaAgenda = formulario['fecha'], estado = 'En proceso')
     agenda.save()
-    return redirect('/')  
+    return redirect('/inicio/%s' %(request.POST['nombreEmpresa']))  
 
-"""def signin(request):
-    formulario = request.POST.dict()
+def signin(request):
+    formulario=request.POST.dict()
     if request.method == 'POST':
-        nameEmpresa = formulario['nombreEmpresa']
-        passw = formulario['clave']
-        user = authenticate(nombreEmpresa=nameEmpresa, clave=passw)
-        if user is not None:
-            login(request, user)
-            name = user.nombreEmpresa
-            return render(request, 'index.html', {'name' : name})
+        user = Usuario.objects.filter(nombreEmpresa = formulario["nombreEmpresa"]).filter(clave = formulario["clave"])
+        tipouser = user.values()[0]
+        print(user.values())
+        tipouser = tipouser["idtipousuario_id"]
+        
+        if len(user.values()) != 0:
+            if tipouser == 2:
+                return redirect('/administrador/')
+            return redirect('/inicio/%s' %(formulario["nombreEmpresa"]))
         else: 
+            print("sUPer Malo")
             messages.error(request, "sUPer Malo")
-    return render(request, 'login.html')"""
-    
-def ingresar(request):
-    return render(request, 'login.html') 
+    return render(request, 'login.html')
+
+def signout(request):
+    return redirect('/')
 
 def administrador(request):
-    return render(request, 'admin.html')   
-
-git remote add origin https://github.com/Paulina-Lopez/EcoIndustryNew.git
-git branch -M main
-git push -u origin main
+    return render(request, 'admin.html')
