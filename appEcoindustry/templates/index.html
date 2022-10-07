@@ -14,18 +14,25 @@
 <body>
 
 
-
     <nav>
         <div class="nav-wrapper" style="background-color: #363636;">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
-                <li><a class="modal-trigger" href="#modal1">Intercambio</a></li>
+                {% if name %}
                 <li><a class="modal-trigger" href="#modal4">Agenda</a></li>
-                <li><a class="modal-trigger" href="#modal6">Bonificaciones</a></li>
-                <li><a href="ingresar/">Ingresar</a></li>
+                <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
+                <b><li><a class="dropdown-trigger" data-target="dropdown1">{{name}}<i class="material-icons right">arrow_drop_down</i></a></li></b>                 
+                {% else %}
+                <li><a href="/bonos1/">Catálogo</a></li>
+                <li><a href="/signin/">Ingresar</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
+    <!-- Dropdown Structure -->
+    <ul id='dropdown1' class='dropdown-content'>
+        <li><a href="/signout/">Salir</a></li>
+    </ul>
 
     <div class="parallax-container">
         <div class="parallax"><img src="https://i.postimg.cc/HL7LF7Zh/Dise-o-sin-t-tulo.png">
@@ -78,49 +85,6 @@
         </div>
     </div>
 
-
-    <!-- Modal Structure -->
-    <div id="modal1" class="modal">
-        <div class="modal-content">
-            <div class="container">
-                <div class="row">
-                    <form class="col s12" action="/intercambio/" method="POST" onsubmit="return openmodal3()">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">account_circle</i>
-                                <select id="select" name="nombreEmpresa" autofocus>
-                                    {%for user in usuario%}
-                                    <option>{{user.nombreEmpresa}}</option>
-                                    {% endfor %}
-                                </select>
-                                <label>Nombre de la empresa</label>
-                            </div>
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">favorite</i>
-                                <select id="select" name="tipoMaterial" autofocus>
-                                    <option value="1">Plástico</option>
-                                    <option value="2">Vidrio</option>
-                                    <option value="3">Cartón - Papel</option>
-                                    <option value="4">Metal</option>
-                                </select>
-                                <label>Tipo de Material</label>
-                            </div>
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">insert_comment</i>
-                                <input id="icon_prefix" type="number" class="validate" name="peso" autofocus>
-                                <label for="icon_prefix">Peso en kilogramos</label>
-                            </div>
-                            <center><button id="submit" class="modal-close btn"
-                                    style="background-color:#2d572c;">Enviar</button></center>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <div id="modal4" class="modal">
         <div class="modal-content">
             <div class="container">
@@ -130,13 +94,11 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">account_circle</i>
-                                <select id="select" name="nombreEmpresa" autofocus>
-                                    {%for user in usuario%}
-                                    <option>{{user.nombreEmpresa}}</option>
-                                    {% endfor %}
-                                </select>
-                                <label>Nombre de la empresa</label>
-                            </div>
+                                {%for user in usuario%}
+                                <input value="{{user.nombreEmpresa}}" name="nombreEmpresa" type="text" readonly>
+                                <label>Nombre de la Empresa</label>
+                                {% endfor %}
+                            </div> 
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">event</i>
                                 <input type="date" name="fecha">
@@ -178,6 +140,7 @@
 
 
     <center>
+        {% if name %}
         <div class="container card-panel" style="width: 95%;">
             <div class="section black-text">
                 <h4 class="black-text">¡Queremos conocer tu opinión!</h4>
@@ -191,17 +154,15 @@
                 </p>
                 <br>
                 <div class="row">
-                    <form action="/comentario/" method="POST" onsubmit="return openmodal()">
+                    <form action="/comentario/{{name}}" method="POST" onsubmit="return openmodal()">
                         {% csrf_token %}
-                        <div class="input-field col s12" style="display: flex">
+                        <div class="input-field col s12">
                             <i class="material-icons prefix">account_circle</i>
-                            <select id="select" name="nombreEmpresa" autofocus>
-                                {%for user in usuario%}
-                                <option>{{user.nombreEmpresa}}</option>
-                                {% endfor %}
-                            </select>
-                            <label>Nombre de la empresa</label>
-                        </div>
+                            {%for user in usuario%}
+                            <input value="{{user.nombreEmpresa}}" name="nombreEmpresa" type="text" readonly>
+                            <label>Nombre de la Empresa</label>
+                            {% endfor %}
+                        </div>                               
                         <div class="input-field col s12">
                             <i class="material-icons prefix">comment</i>
                             <input id="icon_prefix" type="text" name="Comentario" class="validate" required>
@@ -215,21 +176,25 @@
             </div>
             </form>
         </div>
+        {% endif %}
 
+
+        <br><br>
         <footer class="page-footer" style="background-color: #363636;">
             <div class="container">
               <div class="row">
                 <div class="col l6 s12">
                   <h5 class="white-text">EcoIndustry</h5>
-                  <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                  <p class="grey-text text-lighten-4">¡Intenta dejar la tierra mejor de como la encontraste!</p>
                 </div>
-                <div class="col l4 offset-l2 s12">
-                  <h5 class="white-text">Links</h5>
-                  <ul>
-                    <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                <div class="col l4 offset-l2 s12">                  <ul>
+                    {% if name %}
+                    <li><a class="grey-text text-lighten-3" href="/">Inicio</a></li>
+                    <li><a class="grey-text text-lighten-3" href="/verCatalogo/">Catálogo</a></li>
+                    {% else %}
+                    <li><a class="grey-text text-lighten-3" href="/verCatalogo/">Catálogo</a></li>
+                    <li><a class="grey-text text-lighten-3" href="/signin/">Ingresar</a></li>
+                    {% endif %}
                   </ul>
                 </div>
               </div>
@@ -272,6 +237,16 @@
         $(document).ready(function () {
             $('.parallax').parallax();
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+            });
+        
+            // Or with jQuery
+        
+            $('.dropdown-trigger').dropdown();
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

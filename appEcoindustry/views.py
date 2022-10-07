@@ -1,14 +1,19 @@
-from cgi import print_arguments
 from django.shortcuts import render, redirect
 from .models import Comentario, TipoUsuario, Usuario, Puntos_Usuarios, Bonificacion, Agenda
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
+def iniciop(request, name):
+    #empresa = Usuario.objects.all().values()
+    #nombreusuario = empresa[0]
+    usuario = Usuario.objects.filter(nombreEmpresa = name)
+    return render(request, 'index.html', {"name":name,"usuario": usuario})
+
 def inicio(request):
-    empresa = Usuario.objects.all().values()
-    usuario = Usuario.objects.all()
-    nombreusuario = empresa[0]
-    return render(request, 'index.html', {"name":nombreusuario["nombreEmpresa"],"usuario": usuario})
+    #empresa = Usuario.objects.all().values()
+    #nombreusuario = empresa[0]
+    #usuario = Usuario.objects.filter(nombreEmpresa = name)
+    return render(request, 'index.html')
 
 def bonos(request, name):
     empresas  = Usuario.objects.all()
@@ -22,13 +27,16 @@ def bonos(request, name):
     bonificacion=Bonificacion.objects.all()
     return render(request, 'bonos.html', {"name":name, "cantidad": cantidadp, "bono": bonificacion, "empresas": empresas})
 
-def verCatalogo(request):
-    print(request.POST.dict())
-    return redirect('/bonos/%s' %(request.POST.dict()["nombreEmpresa"])) 
+def bonos1(request):
+    bonificacion=Bonificacion.objects.all()
+    return render(request, 'bonos.html', {"bono": bonificacion})
+
 
 def intercambio(request):
     formulario = request.POST.dict()
-    empresa = Usuario.objects.filter(nombreEmpresa = formulario['nombreEmpresa']).values()
+    empresa = Usuario.objects.filter(nombreEmpresa = formulario["nombreEmpresa"]).values()
+    print(formulario)
+    print(empresa)
     id_empresa = empresa[0]
     id_empresa = id_empresa["id"]
     objeto_puntos = Puntos_Usuarios.objects.filter(identificacion = id_empresa).values()
@@ -48,7 +56,7 @@ def intercambio(request):
     suma = puntos + cantidad_puntos
     o_p = Puntos_Usuarios.objects.filter(identificacion_id = id_empresa).values()
     o_p.update(cantidad=suma)
-    return redirect('/')
+    return redirect('/administrador/')
 
 def redimir(request, name, puntosbono):
     usuario=Usuario.objects.filter(nombreEmpresa=name)
@@ -81,13 +89,13 @@ def registro(request):
     print(formulario)
     return redirect('/')          
 
-def comentario(request):
+def comentario(request, name):
     formulario = request.POST.dict()
     print(formulario)
     idEmpresa= Usuario.objects.get(nombreEmpresa = request.POST['nombreEmpresa'])   
     comentario = Comentario(identificacion = idEmpresa, desComent = formulario['Comentario'])
     comentario.save()
-    return redirect('/')        
+    return redirect('/inicio/%s' %(name))        
 
 def agenda(request):
     formulario = request.POST.dict()
@@ -95,24 +103,52 @@ def agenda(request):
     idEmpresa= Usuario.objects.get(nombreEmpresa = request.POST['nombreEmpresa'])   
     agenda = Agenda(identificacion = idEmpresa, fechaAgenda = formulario['fecha'], estado = 'En proceso')
     agenda.save()
-    return redirect('/')  
+    return redirect('/inicio/%s' %(request.POST['nombreEmpresa']))  
 
-"""def signin(request):
-    formulario = request.POST.dict()
+def signin(request):
+    formulario=request.POST.dict()
     if request.method == 'POST':
-        nameEmpresa = formulario['nombreEmpresa']
-        passw = formulario['clave']
-        user = authenticate(nombreEmpresa=nameEmpresa, clave=passw)
-        if user is not None:
-            login(request, user)
-            name = user.nombreEmpresa
-            return render(request, 'index.html', {'name' : name})
+        user = Usuario.objects.filter(nombreEmpresa = formulario["nombreEmpresa"]).filter(clave = formulario["clave"])
+        tipouser = user.values()[0]
+        print(user.values())
+        tipouser = tipouser["idtipousuario_id"]
+        
+        if len(user.values()) != 0:
+            if tipouser == 2:
+                return redirect('/administrador/')
+            return redirect('/inicio/%s' %(formulario["nombreEmpresa"]))
         else: 
+            print("sUPer Malo")
             messages.error(request, "sUPer Malo")
-    return render(request, 'login.html')"""
-    
-def ingresar(request):
-    return render(request, 'login.html') 
+    return render(request, 'login.html')
+
+def signout(request):
+    return redirect('/')
 
 def administrador(request):
-    return render(request, 'admin.html')   
+    empresas = Usuario.objects.filter(idtipousuario_id = 1)
+    return render(request, 'admin.html', {"empresas":empresas})
+
+def editar(request):
+    formulario = request.POST.dict()
+    print(formulario)   
+    return redirect("/administrador/")
+
+def eliminar(request, name):
+    empresa = Usuario.objects.filter(nombreEmpresa = name)
+    empresa.delete()
+    return redirect("/administrador/")
+
+def addBonos(request):
+    formulario = request.POST.dict()
+    print(formulario)
+    if request.method == 'POST':
+        bonificacion = Bonificacion(nombre = formulario['nombre'], valor = formulario['valor'], imagen = formulario['imagen'])
+        bonificacion.save()
+    bonos = Bonificacion.objects.all()
+    return render(request, 'addBonos.html', {"bonos":bonos})
+
+def eliminarBonos(request, name):
+    bono = Bonificacion.objects.filter(nombre = name)
+    bono.delete()
+    return redirect("/addBonos/")

@@ -17,8 +17,14 @@
     <nav>
         <div class="nav-wrapper" style="background-color: #363636;">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/">Inicio</a></li>
+                {% if name %}
+                <li><a href="/inicio/{{name}}">Inicio</a></li>
                 <li><a class="modal-trigger" href="#modal2">{{name}}</a></li>
+                {% else %}
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/verCatalogo/">Catálogo</a></li>
+                <li><a href="/signin/">Ingresar</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -33,15 +39,6 @@
         </form>
     </div>
 
-    <div id="modal3" class="modal">
-        <div class="modal-content center">
-            <h5>Buena elección</h5>
-            <p>Podrás recoger tu bien en nuestras instalaciones. ¡Te esperamos!</p>
-            <p>Tu puntaje actual: 3000</p>
-        </div>
-        </form>
-    </div>
-
     <div class="row">
         {%for bonificacion in bono%}
         {% if cantidad >= bonificacion.valor %}
@@ -51,9 +48,15 @@
                     <img src="{{bonificacion.imagen}}">
                     <form action="/redimir/{{name}}/{{bonificacion.valor}}" method="POST" onsubmit="return openmodal()">
                         {% csrf_token %}
+                        {% if name %}
                         <button id="submit"
                             class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
                                 class="material-icons">add</i></button>
+                        {% else %}
+                        <button onclick ="return openmodal2()"
+                            class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
+                                class="material-icons">add</i></button>
+                        {% endif %}
                     </form>
                 </div>
                 <div class="card-content">
@@ -67,12 +70,15 @@
             <div class="card">
                 <div class="card-image">
                     <img src="{{bonificacion.imagen}}">
-                    <form action="/redimir/{{name}}/{{bonificacion.valor}}" method="POST" onsubmit="return openmodal1()">
-                        {% csrf_token %}
-                        <button id="submit"
+                        {% if name %}
+                        <button onclick ="return openmodal1()"
                             class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
                                 class="material-icons">add</i></button>
-                    </form>
+                        {% else %}
+                        <button onclick ="return openmodal2()"
+                            class="btn-floating halfway-fab waves-effect waves-light red modal-trigger"><i
+                                class="material-icons">add</i></button>
+                        {% endif %}
                 </div>
                 <div class="card-content">
                     <p>{{bonificacion.nombre}}</p>
@@ -124,6 +130,9 @@
         }
         function openmodal1() {
             alert("No tienes suficientes puntos\nRedime más materiales para poder canjear.")
+        }
+        function openmodal2() {
+            alert("Inicia sesión para reclamar los bonos.")
         }
     </script>
     <script>
