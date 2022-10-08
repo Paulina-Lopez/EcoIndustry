@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+<<<<<<< HEAD
 from .models import Comentario, TipoUsuario, Usuario, Puntos_Usuarios, Bonificacion, Agenda
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
@@ -37,6 +38,25 @@ def intercambio(request):
     empresa = Usuario.objects.filter(nombreEmpresa = formulario["nombreEmpresa"]).values()
     print(formulario)
     print(empresa)
+=======
+from .models import Usuario, Puntos_Usuarios, Bonificacion
+
+def inicio(request):
+    empresa = Usuario.objects.all().values()
+    nombreusuario = empresa[0]
+    return render(request, 'index.html', {"name":nombreusuario["nombreEmpresa"]})
+
+def bonos(request, name):
+    puntos = Puntos_Usuarios.objects.all().values()
+    cantidadp= puntos[0]['cantidad']
+    bonificacion=Bonificacion.objects.all()
+    
+    return render(request, 'bonos.html', {"name": name, "cantidad": cantidadp, "bono": bonificacion})
+
+def intercambio(request, name):
+    formulario = request.POST.dict()
+    empresa = Usuario.objects.filter(nombreEmpresa = name).values()
+>>>>>>> origin
     id_empresa = empresa[0]
     id_empresa = id_empresa["id"]
     objeto_puntos = Puntos_Usuarios.objects.filter(identificacion = id_empresa).values()
@@ -56,7 +76,11 @@ def intercambio(request):
     suma = puntos + cantidad_puntos
     o_p = Puntos_Usuarios.objects.filter(identificacion_id = id_empresa).values()
     o_p.update(cantidad=suma)
+<<<<<<< HEAD
     return redirect('/administrador/')
+=======
+    return redirect('/inicio/')
+>>>>>>> origin
 
 def redimir(request, name, puntosbono):
     usuario=Usuario.objects.filter(nombreEmpresa=name)
@@ -75,6 +99,7 @@ def redimir(request, name, puntosbono):
         diferencia = cantidad_objetos_puntos - puntosbono
         o_p.update(cantidad=diferencia)
         print("redimió")
+<<<<<<< HEAD
     return redirect('/bonos/%s' %(name))
 
 def registro(request):
@@ -152,3 +177,6 @@ def eliminarBonos(request, name):
     bono = Bonificacion.objects.filter(nombre = name)
     bono.delete()
     return redirect("/addBonos/")
+=======
+    return redirect('/bonos/%s' %(name))
+>>>>>>> origin

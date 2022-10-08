@@ -7,13 +7,18 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
     {% load static %}
     <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+=======
+
+>>>>>>> origin
 </head>
 
 <body>
 
 
+<<<<<<< HEAD
     <nav>
         <div class="nav-wrapper" style="background-color: #363636;">
             <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -39,12 +44,33 @@
         </div>
     </div>
 
+=======
+
+    <nav>
+        <div class="nav-wrapper" style="background-color: #363636;">
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/inicio/">Inicio</a></li>
+                <li><a class="modal-trigger" href="#modal1">Intercambio</a></li>
+                <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="parallax-container">
+        <div class="parallax"><img
+                src="https://lh6.googleusercontent.com/OfjtC7ZpFnWC2eXtEUHxjm4oITB5nAwqOQKVqH8S25vDi9lVN2pubXiHZW2zYMwNbAAAdjM_s4p7mkS6I2nrO2LfsY50nxV_WpTqx58btSmDG2jBan-wCFjNOHSxmZdPqg=w1280">
+        </div>
+    </div>
+
+
+>>>>>>> origin
     <div class="container">
         <div class="section">
             <div class="row">
                 <div class="col s12 m4">
                     <div class="icon-block">
                         <h2 class="center"><i class="medium material-icons" style="color:#2d572c;">grade</i></h2>
+<<<<<<< HEAD
                         <h5 class="center">Propósito de EcoIndustry</h5>
 
                         <p class="center">
@@ -53,12 +79,20 @@
                             medianas empresas del Valle de Aburrá, y a su vez conozcan como aprovecharlos y así obtener
                             un incentivo por ser parte
                             del proceso.</p>
+=======
+                        <h5 class="center">Speeds up development</h5>
+
+                        <p class="center">We did most of the heavy lifting for you to provide a default stylings that
+                            incorporate our custom components. Additionally, we refined animations and transitions to
+                            provide a smoother experience for developers.</p>
+>>>>>>> origin
                     </div>
                 </div>
 
                 <div class="col s12 m4">
                     <div class="icon-block">
                         <h2 class="center"><i class="medium material-icons" style="color:#2d572c;">person</i></h2>
+<<<<<<< HEAD
                         <h5 class="center">Importancia de reciclar</h5>
 
                         <p class="center">Promueve la conservación de los recursos naturales como el agua, el suelo, los
@@ -66,18 +100,33 @@
                             contaminación que se produce durante su extracción y elaboración de productos. Además reduce
                             la emisión de gases
                             contaminantes.</p>
+=======
+                        <h5 class="center">Speeds up development</h5>
+
+                        <p class="center">We did most of the heavy lifting for you to provide a default stylings that
+                            incorporate our custom components. Additionally, we refined animations and transitions to
+                            provide a smoother experience for developers.</p>
+>>>>>>> origin
                     </div>
                 </div>
 
                 <div class="col s12 m4">
                     <div class="icon-block">
                         <h2 class="center"><i class="medium material-icons" style="color:#2d572c;">loyalty</i></h2>
+<<<<<<< HEAD
                         <h5 class="center">Materiales reciclables</h5>
 
                         <p class="center">Papel: Periódicos, revistas y cajas de cartón. Metal: Latas, recipientes
                             metálicos y papel de aluminio. Plástico: Botellas, bolsas de compras, recipientes
                             y envoltorios plásticos. 
                             Vidrio: Botellas, frascos, recipientes y materiales compuestos de vidrio.</p>
+=======
+                        <h5 class="center">Speeds up development</h5>
+
+                        <p class="center">We did most of the heavy lifting for you to provide a default stylings that
+                            incorporate our custom components. Additionally, we refined animations and transitions to
+                            provide a smoother experience for developers.</p>
+>>>>>>> origin
                     </div>
                 </div>
             </div>
@@ -85,6 +134,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <div id="modal4" class="modal">
         <div class="modal-content">
             <div class="container">
@@ -118,10 +168,20 @@
             <div class="container">
                 <div class="row">
                     <form action="/verCatalogo/" method="POST">
+=======
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="row">
+                    <form class="col s12" action="/intercambio/{{name}}" method="POST">
+>>>>>>> origin
                         {% csrf_token %}
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">account_circle</i>
+<<<<<<< HEAD
                                 <select id="select" name="nombreEmpresa" autofocus>
                                     {%for user in usuario%}
                                     <option>{{user.nombreEmpresa}}</option>
@@ -131,6 +191,27 @@
                             </div>
                             <center><button href="/bonos/{{name}}" class="modal-close btn"
                                     style="background-color:#2d572c;">Ver catálogo</button></center>
+=======
+                                <input id="icon_prefix" type="text" name="nombreEmpresa" value="{{name}}" class="validate" autofocus>
+                                <label for="icon_prefix">Nombre de la empresa</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">favorite</i>
+                                <select id="select" name="tipoMaterial" autofocus>
+                                    <option value="1">Plástico</option>
+                                    <option value="2">Vidrio</option>
+                                    <option value="3">Cartón - Papel</option>
+                                    <option value="4">Metal</option>
+                                </select>
+                                <label>Tipo de Material</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">insert_comment</i>
+                                <input id="icon_prefix" type="number" class="validate" name="peso" autofocus>
+                                <label for="icon_prefix">Peso en kilogramos</label>
+                            </div>
+                            <center><button id="submit" class="modal-close btn" style="background-color:#2d572c;">Enviar</button></center>
+>>>>>>> origin
                         </div>
                     </form>
                 </div>
@@ -138,6 +219,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
 
     <center>
         {% if name %}
@@ -227,6 +309,10 @@
         }
     </script>
     <script>
+=======
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+>>>>>>> origin
         document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.parallax');
             var instances = M.Parallax.init(elems);
@@ -239,6 +325,7 @@
         });
     </script>
     <script>
+<<<<<<< HEAD
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.dropdown-trigger');
             var instances = M.Dropdown.init(elems);
@@ -249,6 +336,8 @@
             $('.dropdown-trigger').dropdown();
     </script>
     <script>
+=======
+>>>>>>> origin
         document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.modal');
             var instances = M.Modal.init(elems);

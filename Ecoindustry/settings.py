@@ -9,7 +9,11 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+<<<<<<< HEAD
 import os 
+=======
+
+>>>>>>> origin
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -55,7 +59,11 @@ ROOT_URLCONF = 'Ecoindustry.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+<<<<<<< HEAD
         'DIRS': ['C:/Users/Paulina López/Documents/Trabajos U/Cuarto Semestre/Ingeniería de Software/EcoIndustry/appEcoindustry/templates'],
+=======
+        'DIRS': ['C:/Users/USER/Documents/Camilo/programacion/PI1/proyecto/EcoIndustry/appEcoindustry/templates'],
+>>>>>>> origin
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,7 +87,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ECOINDUSTRY',
         'USER': 'postgres',
+<<<<<<< HEAD
         'PASSWORD': '1034916004',
+=======
+        'PASSWORD': '2242003179248650',
+>>>>>>> origin
         'HOST': '127.0.0.1',
         'DATABASE_PORT': '5432',
     }
@@ -121,9 +133,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+<<<<<<< HEAD
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+=======
+>>>>>>> origin
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
