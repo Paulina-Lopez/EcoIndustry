@@ -6,11 +6,7 @@ class TipoUsuario(models.Model):
     desctipousuario = models.CharField(max_length=20)
 
 class Usuario(models.Model):
-<<<<<<< HEAD
     id = models.AutoField(primary_key=True, null=False)
-=======
-    id = models.BigIntegerField(primary_key=True, null=False)
->>>>>>> origin
     nombreEmpresa = models.CharField(max_length=45, unique=False, null=False)
     NIT = models.BigIntegerField(null=False)
     correo = models.CharField(max_length=45, null=False)
@@ -29,7 +25,6 @@ class Usuario_Bonificacion(models.Model):
     idbonificacion = models.ForeignKey(Bonificacion, on_delete=models.CASCADE)
 
 class Puntos_Usuarios(models.Model):
-<<<<<<< HEAD
     id = models.AutoField(primary_key=True, null=False)
     identificacion = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     cantidad = models.IntegerField(null=False)
@@ -45,7 +40,3 @@ class Agenda(models.Model):
     estado = models.CharField(max_length=30, null=False)
     identificacion = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     
-=======
-    identificacion = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    cantidad = models.IntegerField(null=False)
->>>>>>> origin
