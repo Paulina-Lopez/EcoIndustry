@@ -125,8 +125,32 @@ def signin(request):
 def signout(request):
     return redirect('/')
 
+#la parte de puntos está en desarrollo, favor no mover 
 def administrador(request):
-    empresas = Usuario.objects.filter(idtipousuario_id = 1)
+    empresas = Usuario.objects.all()
+    cantEmpresas = Usuario.objects.filter(idtipousuario_id = 1).values()
+    cantEmpresas = cantEmpresas.list()
+    print(cantEmpresas)
+    list = []
+    i = 1
+    #for empresa in cantEmpresa:
+    #    pass
+    while i <= len(cantEmpresas):
+        dic_empresa = {}
+        user =  Usuario.objects.filter(id = i).values()
+        user = user[0]
+        userid = user['id']
+        punto = Puntos_Usuarios.objects.filter(identificacion_id=userid).values()
+        user = user['nombreEmpresa']
+        print(user)
+        punto = punto[0]
+        punto = punto['cantidad']
+        dic_empresa[user] = i
+        dic_empresa["cantidad"] = punto
+        list.append(dic_empresa)
+        i = i + 1
+        print("un loop")
+    print(list)
     return render(request, 'admin.html', {"empresas":empresas})
 
 def editar(request):

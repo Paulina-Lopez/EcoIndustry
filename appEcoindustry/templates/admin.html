@@ -96,7 +96,9 @@
                     <td>{{ empresa.clave }}</td>
                     <td>{{ empresa.direccion }}</td>
                     <td>{{ empresa.puntos }}</td>
-                    <td><button type="button" class="yellow accent-4 btn modal-trigger" href="#modal1">Editar</button>
+                    <td><button type="button" class="yellow accent-4 btn modal-trigger" href="#modal1" 
+                        onclick="return openmodal('{{ empresa.nombreEmpresa }}', '{{ empresa.NIT }}', '{{ empresa.correo }}', '{{ empresa.clave }}', '{{ empresa.direccion }}')">
+                            Editar</button>
                     </td>
                     <td><a onclick="alert('Empresa eliminada exitosamente')" class="btn red darken-4" href="/eliminar/{{empresa.nombreEmpresa}}">Eliminar</a></td>
                 </tr>
@@ -106,37 +108,37 @@
     </div>
     </div>
 
-    {% for empresa in empresas %}
     <div id="modal1" class="modal">
         <form action="/editar/" method="POST">
             <div class="modal-content">
                 <div class="row">
                     {% csrf_token %}
                     <div class="col s6">
-                        <input value="{{empresa.nombreEmpresa}}" type="text" name="nombreEmpresa" class="form-control"
-                            placeholder="Nombre de la empresa">
+                        <input type="text" name="nombreEmpresa" class="form-control"
+                            placeholder="Nombre de la empresa" id="nombreempresa">
                     </div>
                     <div class="col s6">
-                        <input value="{{empresa.NIT}}" type="text" name="NIT" class="form-control" placeholder="NIT">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6">
-                        <input value="{{empresa.correo}}" name="correo" type="text" class="form-control"
-                            placeholder="Correo">
-                    </div>
-                    <div class="col s6">
-                        <input value="{{empresa.clave}}" name="clave" type="text" class="form-control"
-                            placeholder="Clave">
+                        <input type="text" name="NIT" class="form-control" placeholder="NIT"
+                        id="nitempresa">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col s6">
-                        <input value="{{empresa.direccion}}" type="text" name="direccion" class="form-control"
-                            placeholder="Dirección">
+                        <input name="correo" type="text" class="form-control"
+                            placeholder="Correo" id="correoempresa">
                     </div>
                     <div class="col s6">
-                        <input value="{{empresa.puntos}}" type="text" name="puntos" class="form-control"
+                        <input name="clave" type="text" class="form-control"
+                            placeholder="Clave" id="claveempresa">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6">
+                        <input type="text" name="direccion" class="form-control"
+                            placeholder="Dirección" id="direccionempresa">
+                    </div>
+                    <div class="col s6">
+                        <input value="puntos" type="text" name="puntos" class="form-control"
                             placeholder="Puntaje">
                     </div>
                 </div>
@@ -154,7 +156,6 @@
                 <a class="modal-close btn red darken-4">Cerrar</a>
                 <a class="btn light-green darken-3">Guardar cambios</a>
             </div>
-            {% endfor %}
         </form>
     </div>
 
@@ -193,6 +194,16 @@
         // Or with jQuery
 
         $('.dropdown-trigger').dropdown();
+    </script>
+    <script>
+        function openmodal(nombre, nit, correo, clave, direccion) {
+            //$('#modal1').modal('show');
+            document.getElementById("nombreempresa").value = nombre;
+            document.getElementById("nitempresa").value = nit;
+            document.getElementById("correoempresa").value = correo;
+            document.getElementById("claveempresa").value = clave;
+            document.getElementById("direccionempresa").value = direccion;
+        }
     </script>
 
 </body>
