@@ -95,11 +95,15 @@
                     <td>{{ empresa.correo }}</td>
                     <td>{{ empresa.clave }}</td>
                     <td>{{ empresa.direccion }}</td>
-                    <td>{{ empresa.puntos }}</td>
+                    {% for punto in listapuntos %}
+                        {% if empresa.nombreEmpresa == punto.nombre %}
+                            <td>{{ punto.puntos }}</td>
                     <td><button type="button" class="yellow accent-4 btn modal-trigger" href="#modal1" 
-                        onclick="return openmodal('{{ empresa.nombreEmpresa }}', '{{ empresa.NIT }}', '{{ empresa.correo }}', '{{ empresa.clave }}', '{{ empresa.direccion }}')">
+                        onclick="return openmodal('{{ empresa.nombreEmpresa }}', '{{ empresa.NIT }}', '{{ empresa.correo }}', '{{ empresa.clave }}', '{{ empresa.direccion }}', '{{ punto.puntos }}')">
                             Editar</button>
                     </td>
+                        {% endif %}
+                    {% endfor %}
                     <td><a onclick="alert('Empresa eliminada exitosamente')" class="btn red darken-4" href="/eliminar/{{empresa.nombreEmpresa}}">Eliminar</a></td>
                 </tr>
                 {% endfor %}
@@ -139,7 +143,7 @@
                     </div>
                     <div class="col s6">
                         <input value="puntos" type="text" name="puntos" class="form-control"
-                            placeholder="Puntaje">
+                            placeholder="Puntaje" id="puntajeempresa">
                     </div>
                 </div>
                 <div class="row">
@@ -154,7 +158,7 @@
             </div>
             <div class="modal-footer">
                 <a class="modal-close btn red darken-4">Cerrar</a>
-                <a class="btn light-green darken-3">Guardar cambios</a>
+                <button id="submit" class="btn light-green darken-3">Guardar cambios</button>
             </div>
         </form>
     </div>
@@ -196,13 +200,14 @@
         $('.dropdown-trigger').dropdown();
     </script>
     <script>
-        function openmodal(nombre, nit, correo, clave, direccion) {
+        function openmodal(nombre, nit, correo, clave, direccion, puntos) {
             //$('#modal1').modal('show');
             document.getElementById("nombreempresa").value = nombre;
             document.getElementById("nitempresa").value = nit;
             document.getElementById("correoempresa").value = correo;
             document.getElementById("claveempresa").value = clave;
             document.getElementById("direccionempresa").value = direccion;
+            document.getElementById("puntajeempresa").value = puntos;
         }
     </script>
 

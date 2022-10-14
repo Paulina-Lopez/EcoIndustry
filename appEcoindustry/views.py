@@ -127,35 +127,27 @@ def signout(request):
 
 #la parte de puntos está en desarrollo, favor no mover 
 def administrador(request):
-    empresas = Usuario.objects.all()
-    cantEmpresas = Usuario.objects.filter(idtipousuario_id = 1).values()
-    cantEmpresas = cantEmpresas.list()
-    print(cantEmpresas)
-    list = []
-    i = 1
-    #for empresa in cantEmpresa:
-    #    pass
-    while i <= len(cantEmpresas):
+    usuario = Usuario.objects.filter(idtipousuario_id = 1)
+    empresas = Usuario.objects.filter(idtipousuario_id = 1).values()
+    empresas = list(empresas)
+    lista = []
+    for empresa in empresas:
         dic_empresa = {}
-        user =  Usuario.objects.filter(id = i).values()
-        user = user[0]
-        userid = user['id']
-        punto = Puntos_Usuarios.objects.filter(identificacion_id=userid).values()
-        user = user['nombreEmpresa']
-        print(user)
-        punto = punto[0]
-        punto = punto['cantidad']
-        dic_empresa[user] = i
-        dic_empresa["cantidad"] = punto
-        list.append(dic_empresa)
-        i = i + 1
-        print("un loop")
-    print(list)
-    return render(request, 'admin.html', {"empresas":empresas})
+        dic_empresa["nombre"] = empresa["nombreEmpresa"]
+        punto = list(Puntos_Usuarios.objects.filter(identificacion_id = empresa["id"]).values())
+        dic_empresa["puntos"] = punto[0]["cantidad"]
+        lista.append(dic_empresa)
+    return render(request, 'admin.html', {"empresas":usuario, "listapuntos":lista})
 
 def editar(request):
     formulario = request.POST.dict()
+    print("editando")
     print(formulario)   
+    usuario = Usuario.objects.filter(nombreEmpresa = formulario["nombreEmpresa"])
+    idusuario = usuario.values()[0]["id"]
+    puntos_usuario = Puntos_Usuarios.objects.filter(identificacion_id = idusuario)
+    puntos_usuario.update(cantidad = formulario["puntos"])
+    usuario.update(nombreEmpresa = formulario["nombreEmpresa"], NIT = formulario["NIT"], correo = formulario["correo"], clave = formulario["clave"], direccion = formulario["direccion"])
     return redirect("/administrador/")
 
 def eliminar(request, name):
