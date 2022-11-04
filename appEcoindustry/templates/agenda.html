@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Agenda</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+</head>
+
+<body>
+
+
+    <nav>
+        <div class="nav-wrapper" style="background-color: #363636;">
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/administrador/">Empresas</a></li>
+                <li><a class="modal-trigger" href="#modal2">Intercambio</a></li>
+                <li><a href="/addBonos/">Bonificaciones</a></li>
+                <li><a href="/agendaAdmin/">Agendamiento</a></li>
+                <b>
+                    <li><a class="dropdown-trigger" data-target="dropdown1">{{name}}<i
+                                class="material-icons right">arrow_drop_down</i></a></li>
+                </b>
+            </ul>
+        </div>
+    </nav>
+
+    <ul id='dropdown1' class='dropdown-content'>
+        <li><a href="/signout/">Salir</a></li>
+    </ul>
+
+
+    <!-- Modal Structure -->
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="row">
+                    <form class="col s12" action="/intercambio/" method="POST" onsubmit="return openmodal3()">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <select id="select" name="nombreEmpresa" autofocus>
+                                    {%for empresa in empresas%}
+                                    <option>{{empresa.nombreEmpresa}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label>Nombre de la empresa</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">favorite</i>
+                                <select id="select" name="tipoMaterial" autofocus>
+                                    <option value="1">Plástico</option>
+                                    <option value="2">Vidrio</option>
+                                    <option value="3">Cartón - Papel</option>
+                                    <option value="4">Metal</option>
+                                </select>
+                                <label>Tipo de Material</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">insert_comment</i>
+                                <input id="icon_prefix" type="number" class="validate" name="peso" autofocus>
+                                <label for="icon_prefix">Peso en kilogramos</label>
+                            </div>
+                            <center><button id="submit" class="modal-close btn"
+                                    style="background-color:#2d572c;">Enviar</button></center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <table class="centered">
+            <thead>
+                <tr>
+                    <th>Fecha de la agenda</th>
+                    <th>Estado</th>
+                    <th>Usuario solicitante</th>
+                    <th>Asignar vehiculo</th>
+                    <th>Denegar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agenda in agendas %}
+                <tr>
+                    <td>{{ agenda.fechaAgenda }}</td>
+                    <td>{{ agenda.estado }}</td>
+                    <td>{{ agenda.nombreEmpresa }}</td>
+                    <td><button type="button" style="background-color:#2d572c;" class="btn modal-trigger" href="#modal1"
+                            onclick="return openmodal('{{ agenda.fechaAgenda }}', '{{ agenda.nombreEmpresa}}')">
+                            Asignar vehiculo</button>
+                    </td>
+                    <td><a onclick="alert('Recuerda reagendar esta solicitud con el usuario')" class="btn red darken-4"
+                            href="/eliminar/{{empresa.nombreEmpresa}}">Eliminar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+    <div id="modal1" class="modal">
+        <form action="/asignarVehiculo/" method="POST">
+            <div class="modal-content">
+                <div class="row">
+                    {% csrf_token %}
+                    <div class="col s6">
+                        <input type="text" name="nombreEmpresa" class="form-control" placeholder="Nombre de la empresa"
+                            id="nombreempresa">
+                    </div>
+                    <div class="col s6">
+                        <input type="date" name="fechaAgenda" class="form-control" placeholder="Fecha de la Agenda"
+                            id="fechagenda">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6">
+                        <input name="estado" type="text" class="form-control" placeholder="Estado" id="estado">
+                    </div>
+                    <div class="col s6">
+                        <input name="nombreConductor" type="text" class="form-control"
+                            placeholder="Nombre del conductor" id="nombreconductor">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6">
+                        <input type="text" name="placa" class="form-control" placeholder="Placa" id="placa">
+                    </div>
+                    <div class="col s6">
+                        <input value="capacidad" type="text" name="capacidad" class="form-control"
+                            placeholder="Capacidad" id="capacidad">
+                    </div>
+                </div>
+                <div class="row">
+                    <div type="text" name="disponibilidad" class="input-field col s6">
+                        <select>
+                            <option value="1">Disponible</option>
+                            <option value="2">Ocupado</option>
+                        </select>
+                        <label>Disponibilidad</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-close btn red darken-4">Cerrar</a>
+                <button id="submit" class="btn light-green darken-3">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+
+    <br><div>
+        <form action="/addVehiculos/" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input id="icon_prefix" type="text" class="validate" name="nombreConductor" autofocus>
+                    <label for="icon_prefix">Nombre del Conductor</label>
+                </div>
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">local_parking</i>
+                    <input id="icon_prefix" type="text" class="validate" name="placa" autofocus>
+                    <label for="icon_prefix">Placa</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6" >
+                    <i class="material-icons prefix">style</i>
+                    <select type="text" name="capacidad" autofocus>
+                        <option value="Grande">Grande</option>
+                        <option value="Mediana">Mediana</option>
+                        <option value="Pequeña">Pequeña</option>
+                    </select>
+                    <label>Capacidad</label>
+                </div>
+                <div class="input-field col s4">
+                    <i class="material-icons prefix">web</i>
+                    <select type="text" name="disponibilidad" autofocus>
+                        <option value="Disponible">Disponible</option>
+                        <option value="Ocupado">Ocupado</option>
+                    </select>
+                    <label>Disponibilidad</label>
+                </div>
+                <div class="col s2">
+                    <center>
+                        <br>
+                        <button id="submit" class="btn" style="background-color:#2d572c;" onclick="alert('Se ha añadido correctamente el vehiculo')">Enviar</button>
+                    </center>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <br>
+    <div class="row">
+        <table class="centered">
+            <thead>
+                <tr>
+                    <th>Nombre del conductor</th>
+                    <th>Placa</th>
+                    <th>Capacidad</th>
+                    <th>Disponibilidad</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vehiculo in vehiculos %}
+                <tr>
+                    <td>{{ vehiculo.nombreConductor }}</td>
+                    <td>{{ vehiculo.placa }}</td>
+                    <td>{{ vehiculo.capacidad }}</td>
+                    <td>{{ vehiculo.disponibilidad}}</td>
+                    <td><button type="button" class="yellow accent-4 btn modal-trigger" href="#modal2"
+                            onclick="return openmodal('{{ vehiculo.nombreConductor }}', '{{ vehiculo.placa }}', '{{ vehiculo.capacidad }}', '{{ vehiculo.disponibilidad }}')">Editar</button>
+                    </td>
+                    <td><a onclick="alert('vehiculo eliminado exitosamente')" class="btn red darken-4"
+                            href="/eliminarBonos/{{bono.nombre}}">Eliminar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+
+    <div id="modal3" class="modal">
+        <form action="/editarVehiculo/" method="POST">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s6">
+                        <input id="nombreBono" value="{{vehiculo.nombreConductor}}" type="text" name="nombreConductor"
+                            class="form-control" placeholder="Nombre del conductor">
+                    </div>
+                    <div class="col s6">
+                        <input id="placa" value="{{vehiculo.placa}}" type="number" name="placa" class="form-control"
+                            placeholder="Placa vehiculo">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s6">
+                        <input id="capacidad" value="{{vehiculo.capacidad}}" name="capacidad" type="text"
+                            class="form-control" placeholder="Capacidad">
+                    </div>
+                    <div class="col s6">
+                        <div type="text" name="disponibilidad" class="input-field col s6">
+                            <select>
+                                <option value="1">Disponible</option>
+                                <option value="2">Ocupado</option>
+                            </select>
+                            <label>Disponibilidad</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-close btn red darken-4">Cerrar</a>
+                <button id="submit" class="btn light-green darken-3">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems);
+        });
+
+        // Or with jQuery
+
+        $(document).ready(function () {
+            $('.modal').modal();
+        });
+    </script>
+    <script>  document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+
+        // Or with jQuery
+
+        $(document).ready(function () {
+            $('select').formSelect();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+        });
+
+        // Or with jQuery
+
+        $('.dropdown-trigger').dropdown();
+    </script>
+    <script>
+        function openmodal(nombre, fecha, estado, conductor, placa, capacidad, disponibilidad) {
+            //$('#modal1').modal('show');
+            document.getElementById("nombreempresa").value = nombre;
+            document.getElementById("fechagenda").value = fecha;
+            document.getElementById("estado").value = estado;
+            document.getElementById("nombreConductor").value = conductor;
+            document.getElementById("placa").value = placa;
+            document.getElementById("capacidad").value = capacidad;
+            document.getElementById("disponibilidad").value = disponibilidad;
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,3 +1,4 @@
+from unittest.util import _MAX_LENGTH
 from django.db import models
 
 # Create your models here.
@@ -34,9 +35,17 @@ class Comentario(models.Model):
     identificacion = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     desComent= models.CharField(max_length=300, null=False)
     
+class Vehiculo(models.Model):
+    placa = models.CharField(max_length=10, primary_key=True, null=False)
+    nombreConductor = models.CharField(max_length=45, unique=False, null=False)
+    capacidad = models.CharField(max_length=45, unique=False, null=False)
+    disponibilidad = models.CharField(max_length=45, unique=False, null=False)
+    
 class Agenda(models.Model):
     idAgenda = models.AutoField(primary_key=True, null=False)
     fechaAgenda = models.DateField(null=False)
     estado = models.CharField(max_length=30, null=False)
     identificacion = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    
+    placa = models.CharField(max_length=10, null=False)
+
+

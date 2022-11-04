@@ -160,3 +160,7 @@ body {
 .nav-wrapper {
     background-color: rgba(0, 0, 0, 0.705);
 }
+
+.materialert.error{
+    color: #fff;
+}

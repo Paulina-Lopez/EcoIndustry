@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% load static %}
-    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+    <link rel="icon" href="{% static 'img/logoE.png' %}" type="image/png">
 </head>
 
 <body>
@@ -20,6 +20,7 @@
                 <li><a href="/administrador/">Empresas</a></li>
                 <li><a class="modal-trigger" href="#modal2">Intercambio</a></li>
                 <li><a href="/addBonos/">Bonificaciones</a></li>
+                <li><a href="/agendaAdmin/">Agendamiento</a></li>
                 <b>
                     <li><a class="dropdown-trigger" data-target="dropdown1">{{name}}<i
                                 class="material-icons right">arrow_drop_down</i></a></li>
@@ -75,7 +76,7 @@
 
     <br><br>
     <div>
-        <form action="/addBonos/" method="POST" onclick="alert('Se ha añadido correctamente la bonificación')">
+        <form action="/addBonos/" method="POST">
             {% csrf_token %}
             <div class="row">
                 <div class="input-field col s6">
@@ -98,7 +99,7 @@
                 <div class="col s6">
                     <center>
                         <br>
-                        <button id="submit" class="btn" style="background-color:#2d572c;">Enviar</button>
+                        <button id="submit" class="btn" style="background-color:#2d572c;" onclick="alert('Se ha añadido correctamente la bonificación')">Enviar</button>
                     </center>
                 </div>
             </div>
@@ -122,7 +123,8 @@
                     <td>{{ bono.nombre }}</td>
                     <td>{{ bono.valor }}</td>
                     <td>{{ bono.imagen }}</td>
-                    <td><button type="button" class="yellow accent-4 btn modal-trigger" href="#modal1">Editar</button>
+                    <td><button type="button" class="yellow accent-4 btn modal-trigger" href="#modal1"
+                            onclick="return openmodal('{{ bono.nombre }}', '{{ bono.valor }}', '{{ bono.imagen }}')">Editar</button>
                     </td>
                     <td><a onclick="alert('Bonificación eliminada exitosamente')" class="btn red darken-4"
                             href="/eliminarBonos/{{bono.nombre}}">Eliminar</a></td>
@@ -133,34 +135,33 @@
     </div>
     </div>
 
-    {% for bono in bonos %}
     <div id="modal1" class="modal">
-        <form action="/editar/" method="POST">
+        <form action="/editarBonos/" method="POST">
+            {% csrf_token %}
             <div class="modal-content">
                 <div class="row">
-                    {% csrf_token %}
                     <div class="col s6">
-                        <input value="{{bono.nombre}}" type="text" name="nombre" class="form-control"
+                        <input id="nombreBono" value="{{bono.nombre}}" type="text" name="nombre" class="form-control"
                             placeholder="Nombre de la bonificación">
                     </div>
                     <div class="col s6">
-                        <input value="{{bono.valor}}" type="number" name="valor" class="form-control" placeholder="Valor">
+                        <input id="valorBono" value="{{bono.valor}}" type="number" name="valor" class="form-control"
+                            placeholder="Valor">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col s12">
-                        <input value="{{bono.imagen}}" name="imagen" type="text" class="form-control"
+                        <input id="imagenBono" value="{{bono.imagen}}" name="imagen" type="text" class="form-control"
                             placeholder="Imagen">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <a class="modal-close btn red darken-4">Cerrar</a>
-                <a class="btn light-green darken-3">Guardar cambios</a>
+                <button id="submit" class="btn light-green darken-3">Guardar cambios</button>
             </div>
         </form>
     </div>
-    {% endfor %}
 
 
 
@@ -198,6 +199,15 @@
 
         $('.dropdown-trigger').dropdown();
     </script>
+    <script>
+        function openmodal(nombre, valor, imagen) {
+            //$('#modal1').modal('show');
+            document.getElementById("nombreBono").value = nombre;
+            document.getElementById("valorBono").value = valor;
+            document.getElementById("imagenBono").value = imagen;
+        }
+    </script>
+
 
 </body>
 

@@ -55,7 +55,7 @@ ROOT_URLCONF = 'Ecoindustry.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['C:/Users/USER/Documents/Camilo/programacion/PI1/proyecto/EcoIndustry/appEcoindustry/templates'],
+        'DIRS': ['C:/Users/Paulina López/Documents/Trabajos U/Cuarto Semestre/Ingeniería de Software/EcoIndustry/appEcoindustry/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ECOINDUSTRY',
         'USER': 'postgres',
-        'PASSWORD': '2242003179248650',
+        'PASSWORD': '1034916004',
         'HOST': '127.0.0.1',
         'DATABASE_PORT': '5432',
     }
