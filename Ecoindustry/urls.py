@@ -1,31 +1,37 @@
 from django.contrib import admin
 from django.urls import path
-from appEcoindustry.views import addBonos, addVehiculos, agendaAdmin, comentario, editarBonos, eliminarBonos, inicio, iniciop, bonos, bonos1, intercambio, redimir, registro, comentario, agenda, signin, administrador, signout, editar, eliminar, signinMalo
+from appEcoindustry.views import preguntas, agregarBonos, agregarVehiculos, agendaAdmin, comentario, editarBonos, eliminarBonos, inicio, inicioUsuario, bonos, bonosSinUsuario, intercambio, redimir, registro, comentario, agenda, ingresar, administrador, salir, editarUsuario, eliminarUsuario, ingresoIncorrecto, eliminarVehiculo,editarVehiculo, cambiarEstadoAgenda, asignarVehiculo
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('administrador/', administrador),
-    path('inicio/<name>', iniciop),
+    path('inicio/<nombre>', inicioUsuario),
     path('', inicio),
-    path('bonos/<name>', bonos),
-    path('bonos1/', bonos1),
+    path('bonos/<nombre>', bonos),
+    path('bonos1/', bonosSinUsuario),
     path('intercambio/', intercambio),
     path('registro/', registro),
-    path('comentario/<name>', comentario),
+    path('comentario/<nombre>', comentario),
     path('agenda/', agenda),
-    path('redimir/<name>/<int:puntosbono>', redimir),
-    path('signin/', signin),
-    path('signin/<mensaje>', signinMalo),
-    path('signout/', signout),
-    path('editar/', editar),
+    path('redimir/<nombre>/<int:puntosbono>', redimir),
+    path('signin/', ingresar),
+    path('signin/<mensaje>', ingresoIncorrecto),
+    path('signout/', salir),
+    path('editar/', editarUsuario),
     path('editarBonos/', editarBonos),
-    path('eliminar/<name>', eliminar),
-    path('eliminarBonos/<name>', eliminarBonos),
-    path('addBonos/', addBonos),
+    path('eliminar/<nombre>', eliminarUsuario),
+    path('eliminarBonos/<nombre>', eliminarBonos),
+    path('addBonos/', agregarBonos),
+    path('verCatalogo/', bonosSinUsuario),
     path('agendaAdmin/', agendaAdmin),
-    path('addVehiculos/', addVehiculos),
+    path('addVehiculos/', agregarVehiculos),
+    path('eliminarVehiculo/<placa>', eliminarVehiculo),
+    path('editarVehiculo/', editarVehiculo),
+    path('ayuda/', preguntas),
+    path('cambiarEstadoAgenda/', cambiarEstadoAgenda),
+    path('asignarVehiculo/', asignarVehiculo),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -82,6 +82,8 @@
                     <th>Fecha de la agenda</th>
                     <th>Estado</th>
                     <th>Usuario solicitante</th>
+                    <th>Placa vehiculo</th>
+                    <th>Editar estado</th>
                     <th>Asignar vehiculo</th>
                     <th>Denegar</th>
                 </tr>
@@ -91,9 +93,22 @@
                 <tr>
                     <td>{{ agenda.fechaAgenda }}</td>
                     <td>{{ agenda.estado }}</td>
-                    <td>{{ agenda.nombreEmpresa }}</td>
+                        {% for empresa in empresas %}
+                            {% if empresa.id == agenda.identificacion_id %}
+                            <td>{{ empresa.nombreEmpresa }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    {% if agenda.placa == " " %}
+                        <td>Sin asignar</td>
+                    {% else %}
+                        <td>{{ agenda.placa }}</td>
+                    {% endif %}
+                    <td><button type="button" style="background-color:#2d572c;" class="btn modal-trigger" href="#modal0"
+                        onclick="return openmodal1('{{ agenda.idAgenda }}')">
+                        Editar estado</button></td>
+                    
                     <td><button type="button" style="background-color:#2d572c;" class="btn modal-trigger" href="#modal1"
-                            onclick="return openmodal('{{ agenda.fechaAgenda }}', '{{ agenda.nombreEmpresa}}')">
+                            onclick="return openmodal2('{{ agenda.idAgenda }}')">
                             Asignar vehiculo</button>
                     </td>
                     <td><a onclick="alert('Recuerda reagendar esta solicitud con el usuario')" class="btn red darken-4"
@@ -103,47 +118,42 @@
             </tbody>
         </table>
     </div>
+
+    <div id="modal0" class="modal">
+        <form action="/cambiarEstadoAgenda/" method="POST">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="row">
+                    <div class="input-field col s6" >
+                        <input id="idagenda1" type="hidden" name="idAgenda" class="form-control" autofocus>
+                        <select type="text" name="estado" id="idestado" autofocus>
+                            <option value="En proceso">En Proceso</option>
+                            <option value="Finalizado">Finalizado</option>
+                        </select>
+                        <label>Estado</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-close btn red darken-4">Cerrar</a>
+                <button id="submit" class="btn light-green darken-3">Guardar cambios</button>
+            </div>
+        </form>
     </div>
 
     <div id="modal1" class="modal">
         <form action="/asignarVehiculo/" method="POST">
+            {% csrf_token %}
             <div class="modal-content">
                 <div class="row">
-                    {% csrf_token %}
-                    <div class="col s6">
-                        <input type="text" name="nombreEmpresa" class="form-control" placeholder="Nombre de la empresa"
-                            id="nombreempresa">
-                    </div>
-                    <div class="col s6">
-                        <input type="date" name="fechaAgenda" class="form-control" placeholder="Fecha de la Agenda"
-                            id="fechagenda">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6">
-                        <input name="estado" type="text" class="form-control" placeholder="Estado" id="estado">
-                    </div>
-                    <div class="col s6">
-                        <input name="nombreConductor" type="text" class="form-control"
-                            placeholder="Nombre del conductor" id="nombreconductor">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6">
-                        <input type="text" name="placa" class="form-control" placeholder="Placa" id="placa">
-                    </div>
-                    <div class="col s6">
-                        <input value="capacidad" type="text" name="capacidad" class="form-control"
-                            placeholder="Capacidad" id="capacidad">
-                    </div>
-                </div>
-                <div class="row">
-                    <div type="text" name="disponibilidad" class="input-field col s6">
-                        <select>
-                            <option value="1">Disponible</option>
-                            <option value="2">Ocupado</option>
+                    <div type="text" name="placa" class="input-field col s6">
+                        <input id="idagenda2" type="hidden" name="idAgenda" class="form-control" autofocus>
+                        <select name="placa" autofocus>
+                            {% for vehiculo in vehiculos %}
+                            <option value="{{vehiculo.placa}}">{{vehiculo.placa}}: {{vehiculo.capacidad}}</option>
+                            {% endfor %}
                         </select>
-                        <label>Disponibilidad</label>
+                        <label>Vehiculos</label>
                     </div>
                 </div>
             </div>
@@ -217,43 +227,41 @@
                     <td>{{ vehiculo.placa }}</td>
                     <td>{{ vehiculo.capacidad }}</td>
                     <td>{{ vehiculo.disponibilidad}}</td>
-                    <td><button type="button" class="yellow accent-4 btn modal-trigger" href="#modal2"
+                    <td><button type="button" class="yellow accent-4 btn modal-trigger" href="#modal3"
                             onclick="return openmodal('{{ vehiculo.nombreConductor }}', '{{ vehiculo.placa }}', '{{ vehiculo.capacidad }}', '{{ vehiculo.disponibilidad }}')">Editar</button>
                     </td>
                     <td><a onclick="alert('vehiculo eliminado exitosamente')" class="btn red darken-4"
-                            href="/eliminarBonos/{{bono.nombre}}">Eliminar</a></td>
+                            href="/eliminarVehiculo/{{vehiculo.placa}}">Eliminar</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    </div>
 
 
     <div id="modal3" class="modal">
-        <form action="/editarVehiculo/" method="POST">
+        <form action="/editarVehiculo/" method="POST", name="edit-vehiculo-form", id="edit-vehiculo-form">
             {% csrf_token %}
             <div class="modal-content">
                 <div class="row">
                     <div class="col s6">
-                        <input id="nombreBono" value="{{vehiculo.nombreConductor}}" type="text" name="nombreConductor"
-                            class="form-control" placeholder="Nombre del conductor">
+                        <input id="nombreConductor" value="{{vehiculo.nombreConductor}}" type="text" name="nombreConductor"
+                            class="form-control" autofocus>
                     </div>
                     <div class="col s6">
-                        <input id="placa" value="{{vehiculo.placa}}" type="number" name="placa" class="form-control"
-                            placeholder="Placa vehiculo">
+                        <input id="idplaca" value="{{vehiculo.placa}}" type="text" name="placa" class="form-control" autofocus>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col s6">
-                        <input id="capacidad" value="{{vehiculo.capacidad}}" name="capacidad" type="text"
-                            class="form-control" placeholder="Capacidad">
+                        <input id="idcapacidad" value="{{vehiculo.capacidad}}" name="capacidad" type="text"
+                            class="form-control" autofocus>
                     </div>
                     <div class="col s6">
-                        <div type="text" name="disponibilidad" class="input-field col s6">
-                            <select>
-                                <option value="1">Disponible</option>
-                                <option value="2">Ocupado</option>
+                        <div type="text" class="input-field col s6">
+                            <select id = "iddisponibilidad" name="disponibilidad" autofocus>
+                                <option value="Disponible">Disponible</option>
+                                <option value="Ocupado">Ocupado</option>
                             </select>
                             <label>Disponibilidad</label>
                         </div>
@@ -303,15 +311,22 @@
         $('.dropdown-trigger').dropdown();
     </script>
     <script>
-        function openmodal(nombre, fecha, estado, conductor, placa, capacidad, disponibilidad) {
+        function openmodal(nombre, placa, capacidad, disponibilidad) {
             //$('#modal1').modal('show');
-            document.getElementById("nombreempresa").value = nombre;
-            document.getElementById("fechagenda").value = fecha;
-            document.getElementById("estado").value = estado;
-            document.getElementById("nombreConductor").value = conductor;
-            document.getElementById("placa").value = placa;
-            document.getElementById("capacidad").value = capacidad;
-            document.getElementById("disponibilidad").value = disponibilidad;
+            document.getElementById("nombreConductor").value = nombre;
+            document.getElementById("idplaca").value = placa;
+            document.getElementById("idcapacidad").value = capacidad;
+            document.getElementById("iddisponibilidad").value = disponibilidad;
+        }
+    </script>
+    <script>
+        function openmodal1(id) {
+            document.getElementById("idagenda1").value = id;
+        }
+    </script>
+    <script>
+        function openmodal2(id) {
+            document.getElementById("idagenda2").value = id;
         }
     </script>
 

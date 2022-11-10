@@ -21,8 +21,10 @@
                 {% if name %}
                 <li><a class="modal-trigger" href="#modal4">Agenda</a></li>
                 <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
+                <li><a href="/ayuda/">Ayuda</a></li>
                 <b><li><a class="dropdown-trigger" data-target="dropdown1">{{name}}<i class="material-icons right">arrow_drop_down</i></a></li></b>                 
                 {% else %}
+                <li><a href="/ayuda/">Ayuda</a></li>
                 <li><a href="/bonos1/">Catálogo</a></li>
                 <li><a href="/signin/">Ingresar</a></li>
                 {% endif %}

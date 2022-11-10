@@ -4,18 +4,20 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
 
-def iniciop(request, name):
-    usuario = Usuario.objects.filter(nombreEmpresa=name)
-    return render(request, 'index.html', {"name": name, "usuario": usuario})
+def inicioUsuario(request, nombre):
+    usuario = Usuario.objects.filter(nombreEmpresa=nombre)
+    return render(request, 'index.html', {"name": nombre, "usuario": usuario})
 
 
 def inicio(request):
     return render(request, 'index.html')
 
+def preguntas(request):
+    return render(request, 'preguntas_frec.html')
 
-def bonos(request, name):
+def bonos(request, nombre):
     empresas = Usuario.objects.all()
-    empresaespe = Usuario.objects.filter(nombreEmpresa=name).values()
+    empresaespe = Usuario.objects.filter(nombreEmpresa=nombre).values()
     print(empresaespe)
     empresaespe = empresaespe[0]
     print(empresaespe)
@@ -24,10 +26,10 @@ def bonos(request, name):
     print(puntos)
     cantidadp = puntos[0]['cantidad']
     bonificacion = Bonificacion.objects.all()
-    return render(request, 'bonos.html', {"name": name, "cantidad": cantidadp, "bono": bonificacion, "empresas": empresas})
+    return render(request, 'bonos.html', {"name": nombre, "cantidad": cantidadp, "bono": bonificacion, "empresas": empresas})
 
 
-def bonos1(request):
+def bonosSinUsuario(request):
     bonificacion = Bonificacion.objects.all()
     return render(request, 'bonos.html', {"bono": bonificacion})
 
@@ -61,8 +63,8 @@ def intercambio(request):
     return redirect('/administrador/')
 
 
-def redimir(request, name, puntosbono):
-    usuario = Usuario.objects.filter(nombreEmpresa=name)
+def redimir(request, nombre, puntosbono):
+    usuario = Usuario.objects.filter(nombreEmpresa=nombre)
     listusuario = usuario.values()
     listusuario = listusuario[0]
     listusuario = listusuario['id']
@@ -73,13 +75,13 @@ def redimir(request, name, puntosbono):
     if (cantidad_objetos_puntos < puntosbono):
         messages.info(request, 'Your password has been changed successfully!')
         print("no redimió")
-        return redirect('/bonos/%s' % (name))
+        return redirect('/bonos/%s' % (nombre))
     else:
         o_p = Puntos_Usuarios.objects.filter(identificacion_id=listusuario)
         diferencia = cantidad_objetos_puntos - puntosbono
         o_p.update(cantidad=diferencia)
         print("redimió")
-    return redirect('/bonos/%s' % (name))
+    return redirect('/bonos/%s' % (nombre))
 
 
 def registro(request):
@@ -97,7 +99,7 @@ def registro(request):
     return redirect('/')
 
 
-def comentario(request, name):
+def comentario(request, nombre):
     formulario = request.POST.dict()
     print(formulario)
     idEmpresa = Usuario.objects.get(
@@ -105,7 +107,7 @@ def comentario(request, name):
     comentario = Comentario(identificacion=idEmpresa,
                             desComent=formulario['Comentario'])
     comentario.save()
-    return redirect('/inicio/%s' % (name))
+    return redirect('/inicio/%s' % (nombre))
 
 
 def agenda(request):
@@ -119,7 +121,7 @@ def agenda(request):
     return redirect('/inicio/%s' % (request.POST['nombreEmpresa']))
 
 
-def signin(request):
+def ingresar(request):
     formulario = request.POST.dict()
     if request.method == 'POST':
         try:
@@ -136,7 +138,7 @@ def signin(request):
     return render(request, 'login.html')
 
 
-def signinMalo(request, mensaje):
+def ingresoIncorrecto(request, mensaje):
     formulario = request.POST.dict()
     if request.method == 'POST':
         try:
@@ -152,14 +154,8 @@ def signinMalo(request, mensaje):
             return redirect('/signin/%s' % ("error"))
     return render(request, 'login.html', {"alerta": mensaje})
 
-
-def signout(request):
+def salir(request):
     return redirect('/')
-
-
-def signout(request):
-    return redirect('/')
-
 
 def administrador(request):
     usuario = Usuario.objects.filter(idtipousuario_id=1)
@@ -176,14 +172,13 @@ def administrador(request):
     return render(request, 'admin.html', {"empresas": usuario, "listapuntos": lista})
 
 
-def editar(request):
+def editarUsuario(request):
     formulario = request.POST.dict()
     print("editando")
     print(formulario)
     usuario = Usuario.objects.filter(nombreEmpresa=formulario["nombreEmpresa"])
     idusuario = usuario.values()[0]["id"]
-    puntos_usuario = Puntos_Usuarios.objects.filter(
-        identificacion_id=idusuario)
+    puntos_usuario = Puntos_Usuarios.objects.filter(identificacion_id=idusuario)
     puntos_usuario.update(cantidad=formulario["puntos"])
     usuario.update(nombreEmpresa=formulario["nombreEmpresa"], NIT=formulario["NIT"],
                    correo=formulario["correo"], clave=formulario["clave"], direccion=formulario["direccion"])
@@ -200,13 +195,13 @@ def editarBonos(request):
     return redirect("/addBonos/")
 
 
-def eliminar(request, name):
-    empresa = Usuario.objects.filter(nombreEmpresa=name)
+def eliminarUsuario(request, nombre):
+    empresa = Usuario.objects.filter(nombreEmpresa=nombre)
     empresa.delete()
     return redirect("/administrador/")
 
 
-def addBonos(request):
+def agregarBonos(request):
     formulario = request.POST.dict()
     print(formulario)
     if request.method == 'POST':
@@ -217,8 +212,8 @@ def addBonos(request):
     return render(request, 'addBonos.html', {"bonos": bonos})
 
 
-def eliminarBonos(request, name):
-    bono = Bonificacion.objects.filter(nombre=name)
+def eliminarBonos(request, nombre):
+    bono = Bonificacion.objects.filter(nombre=nombre)
     bono.delete()
     return redirect("/addBonos/")
 
@@ -226,15 +221,47 @@ def eliminarBonos(request, name):
 def agendaAdmin(request):
     vehiculos = Vehiculo.objects.all()
     agendas = Agenda.objects.all()
-    return render(request, 'agenda.html',  {"agendas": agendas, "vehiculos": vehiculos})
+    empresa = Usuario.objects.filter(idtipousuario_id=1)
+    return render(request, 'agenda.html',  {"agendas": agendas, "vehiculos": vehiculos, "empresas":empresa})
 
+def cambiarEstadoAgenda(request):
+    formulario = request.POST.dict()
+    print(formulario)
+    agenda = Agenda.objects.filter(idAgenda = formulario["idAgenda"])
+    agenda.update(estado = formulario["estado"])
+    return redirect("/agendaAdmin/")
 
-def addVehiculos(request):
+def asignarVehiculo(request):
+    formulario = request.POST.dict()
+    print(formulario)
+    agenda = Agenda.objects.filter(idAgenda = formulario["idAgenda"])
+    agenda.update(placa = formulario["placa"])
+    return redirect("/agendaAdmin/")
+
+def agregarVehiculos(request):
     formulario = request.POST.dict()
     print(formulario)
     if request.method == 'POST':
         vehiculo = Vehiculo(nombreConductor=formulario['nombreConductor'], placa=formulario['placa'],
                             capacidad=formulario['capacidad'], disponibilidad=formulario['disponibilidad'])
     vehiculo.save()
-    vehiculos = Vehiculo.objects.all()
-    return render(request, 'agenda.html', {"vehiculos": vehiculos})
+    return redirect("/agendaAdmin/")
+
+def editarVehiculo(request):
+    formulario = request.POST.dict()
+    print("editando")
+    print(formulario)
+    vehiculo = Vehiculo.objects.filter(placa=formulario["placa"])
+    vehiculo.update(
+        placa=formulario["placa"], nombreConductor=formulario["nombreConductor"], capacidad=formulario["capacidad"], disponibilidad=formulario["disponibilidad"])
+    return redirect("/agendaAdmin/")
+
+def eliminarVehiculo(request, placa):
+    vehiculo = Vehiculo.objects.filter(placa=placa)
+    try: 
+        agenda = Agenda.objects.filter(placa = placa).filter(estado = "En proceso")
+        agenda.update(placa = " ")
+    except:
+        print("no hay agendas de este tipo")
+    vehiculo.delete()
+    return redirect("/agendaAdmin/")

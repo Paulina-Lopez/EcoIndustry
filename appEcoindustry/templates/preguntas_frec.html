@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Preguntas frecuentes</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+    <style>
+        :root {
+            --primario: #2D572C;
+            --gris-claro: #b8b8b8;
+            --sombra: 0 0 13px rgba(185, 185, 185, .25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #fff;
+        }
+
+        main {
+            max-width: 1000px;
+            width: 90%;
+            margin: 40px auto;
+        }
+
+        .titulo {
+            color: #363636;
+            font-weight: 650;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .categorias {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .categoria {
+            cursor: pointer;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8fafb;
+            font-weight: 700;
+            color: var(--gris-claro);
+            border: 2px solid transparent;
+            transition: .3s ease all;
+        }
+
+        .categoria:hover {
+            box-shadow: var(--sombra);
+            color: #000;
+        }
+
+        .categoria:hover path {
+            fill: var(--primario);
+        }
+
+        .categoria svg {
+            width: 64px;
+            margin-bottom: 10px;
+        }
+
+        .categoria path {
+            fill: var(--gris-claro);
+            transition: .3s ease all;
+        }
+
+        .categoria.activa {
+            border: 2px solid var(--primario);
+            color: #000;
+        }
+
+        .categoria.activa path {
+            fill: var(--primario);
+        }
+
+        .contenedor-preguntas {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .contenedor-preguntas.activo {
+            display: grid;
+        }
+
+        .contenedor-pregunta {
+            background: #f8fafb;;
+            padding: 40px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: .3s ease all;
+            cursor: pointer;
+        }
+
+        .contenedor-pregunta:hover {
+            box-shadow: var(--sombra);
+        }
+
+        .contenedor-pregunta.activa {
+            border: 2px solid var(--primario);
+        }
+
+        .pregunta {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .respuesta {
+            color: #808080;
+            line-height: 30px;
+            max-height: 0;
+            opacity: 0;
+            transition: .3s ease all;
+        }
+
+        .contenedor-pregunta.activa .respuesta {
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        .contenedor-pregunta.activa img {
+            transform: rotate(45deg);
+        }
+
+        .bigContainer {
+            padding-top: 50px;
+            transition: .2s ease all;
+        }
+    </style>
+</head>
+
+<nav>
+    <div class="nav-wrapper" style="background-color: #363636;">
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/">Inicio</a></li>
+            {% if name %}
+            <li><a class="modal-trigger" href="#modal4">Agenda</a></li>
+            <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
+            <li><a href="/ayuda/">Ayuda</a></li>
+            <b>
+                <li><a class="dropdown-trigger" data-target="dropdown1">{{name}}<i
+                            class="material-icons right">arrow_drop_down</i></a></li>
+            </b>
+            {% else %}
+            <li><a href="/ayuda/">Ayuda</a></li>
+            <li><a href="/bonos1/">Catálogo</a></li>
+            <li><a href="/signin/">Ingresar</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+<!-- Dropdown Structure -->
+<ul id='dropdown1' class='dropdown-content'>
+    <li><a href="/signout/">Salir</a></li>
+</ul>
+
+<body>
+
+    <main>
+        <div id="big-container" class="bigContainer">
+            <h3 class="titulo">Preguntas Frecuentes</h3>
+            <div class="categorias" id="categorias">
+                <div class="categoria" data-categoria="cuenta">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 489 489"
+                        style="enable-background:new 0 0 489 489;" xml:space="preserve">
+                        <path d="M417.4,71.6C371.2,25.4,309.8,0,244.5,0S117.8,25.4,71.6,71.6S0,179.2,0,244.5s25.4,126.7,71.6,172.9S179.2,489,244.5,489
+                            s126.7-25.4,172.9-71.6S489,309.8,489,244.5S463.6,117.8,417.4,71.6z M244.5,462C124.6,462,27,364.4,27,244.5S124.6,27,244.5,27
+                            S462,124.6,462,244.5S364.4,462,244.5,462z" />
+                        <path
+                            d="M244.5,203.2c35.1,0,63.6-28.6,63.6-63.6s-28.5-63.7-63.6-63.7s-63.6,28.6-63.6,63.6S209.4,203.2,244.5,203.2z
+                                M244.5,102.9c20.2,0,36.6,16.4,36.6,36.6s-16.4,36.6-36.6,36.6s-36.6-16.4-36.6-36.6S224.3,102.9,244.5,102.9z" />
+                        <path d="M340.9,280.5c-22.3-32.8-54.7-49.5-96.4-49.5s-74.1,16.6-96.4,49.5c-16.6,24.4-27.2,57.7-31.4,98.7
+                            c-0.8,7.4,4.6,14.1,12,14.8c7.4,0.8,14.1-4.6,14.8-12c8.5-82.3,42.5-124,101-124s92.5,41.7,101,124c0.7,6.9,6.6,12.1,13.4,12.1
+                            c0.5,0,0.9,0,1.4-0.1c7.4-0.8,12.8-7.4,12-14.8C368.1,338.1,357.5,304.9,340.9,280.5z" />
+                    </svg>
+
+                    <p>Gestión de Cuenta</p>
+                </div>
+
+                <div class="categoria" data-categoria="navegacion">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512.109 512.109" style="enable-background:new 0 0 512.109 512.109;" xml:space="preserve">
+<g>
+	<g>
+		<g>
+			<path d="M94.123,443.692h-0.085c-4.71,0-8.491,3.823-8.491,8.533s3.857,8.533,8.576,8.533c4.71,0,8.533-3.823,8.533-8.533
+				S98.833,443.692,94.123,443.692z"/>
+			<path d="M93.867,392.492c-32.939,0-59.733,26.795-59.733,59.733s26.795,59.733,59.733,59.733
+				c32.939,0,59.733-26.795,59.733-59.733S126.805,392.492,93.867,392.492z M93.867,494.892c-23.526,0-42.667-19.14-42.667-42.667
+				c0-23.526,19.14-42.667,42.667-42.667c23.526,0,42.667,19.14,42.667,42.667C136.533,475.752,117.393,494.892,93.867,494.892z"/>
+			<path d="M347.255,330.813c4.25-7.287,3.243-17.195-2.85-27.904l-42.308-73.583c-2.355-4.087-7.578-5.495-11.648-3.14
+				c-4.087,2.347-5.495,7.561-3.149,11.657l42.291,73.532c3.328,5.854,3.558,9.762,2.918,10.854
+				c-0.401,0.691-2.654,1.997-8.303,1.997h-64.734l11.034-11.034c3.336-3.336,3.336-8.73,0-12.066c-3.328-3.337-8.73-3.337-12.066,0
+				l-25.591,25.6c-0.794,0.785-1.417,1.732-1.852,2.773c-0.862,2.082-0.862,4.437,0,6.519c0.435,1.041,1.058,1.988,1.852,2.773
+				l25.591,25.6c1.664,1.664,3.849,2.5,6.033,2.5c2.185,0,4.369-0.836,6.033-2.5c3.336-3.336,3.336-8.73,0-12.066l-11.034-11.034
+				h64.734C338.227,341.292,344.482,335.592,347.255,330.813z"/>
+			<path d="M508.459,11.556c-5.308-9.182-17.101-16-34.295-7.586l-62.549,30.123H25.6c-14.114,0-25.6,11.486-25.6,25.6
+				s11.486,25.6,25.6,25.6h8.892l12.629,290.509c0.205,4.582,3.977,8.158,8.516,8.158c0.137,0,0.256,0,0.384-0.009
+				c4.71-0.205,8.354-4.19,8.149-8.892L51.576,85.292h315.358c4.719,0,8.533-3.823,8.533-8.533s-3.814-8.533-8.533-8.533H25.6
+				c-4.702,0-8.533-3.831-8.533-8.533c0-4.702,3.831-8.533,8.533-8.533h387.968c1.28,0,2.552-0.29,3.695-0.845l64.35-30.993
+				c9.071-4.454,11.085-0.922,12.066,0.768c2.022,3.516,2.423,8.781-2.637,11.819l-67.661,34.671
+				c-0.427,0.154-0.836,0.341-1.186,0.538c-1.348,0.734-2.714,1.109-4.062,1.109h-17.067c-0.845,0-1.604,0.256-2.364,0.478
+				c-0.205,0.068-0.427,0.051-0.623,0.12c-0.939,0.358-1.775,0.896-2.526,1.544c-0.068,0.068-0.171,0.102-0.239,0.171
+				c-0.597,0.546-1.033,1.22-1.451,1.92c-0.162,0.265-0.393,0.486-0.521,0.776c-0.265,0.572-0.341,1.212-0.469,1.852
+				c-0.102,0.444-0.307,0.836-0.333,1.306l-17.075,392.9c0,14.114-11.486,25.6-25.6,25.6H162.133c-4.71,0-8.533,3.823-8.533,8.533
+				s3.823,8.533,8.533,8.533h187.733c23.526,0,42.667-19.14,42.658-42.3l16.708-384.367h8.9c4.045,0,7.97-0.973,11.605-2.867
+				c0.29-0.111,0.572-0.23,0.819-0.358l68.753-35.234C511.812,39.366,515.755,24.202,508.459,11.556z"/>
+			<path d="M289.698,160.863c-4.531-1.263-9.242,1.399-10.505,5.931l-4.258,15.283l-28.57-49.681
+				c-2.645-4.813-10.778-12.971-24.559-12.971c-14.268,0-22.238,8.328-24.474,12.826l-38.69,67.558
+				c-2.338,4.096-0.922,9.31,3.166,11.648c1.34,0.768,2.799,1.135,4.233,1.135c2.961,0,5.837-1.545,7.415-4.292l38.784-67.746
+				c0.247-0.41,2.628-4.062,9.566-4.062c6.801,0,9.421,3.857,9.668,4.258l28.561,49.664l-14.763-3.968
+				c-4.531-1.212-9.225,1.476-10.453,6.024c-1.22,4.557,1.468,9.242,6.025,10.462l34.62,9.301c0.742,0.196,1.493,0.29,2.227,0.29
+				c0.196,0,0.384-0.085,0.572-0.102c0.375-0.017,0.717-0.102,1.092-0.171c0.691-0.145,1.357-0.367,1.988-0.666
+				c0.188-0.094,0.41-0.094,0.589-0.205c0.128-0.068,0.196-0.196,0.316-0.282c0.657-0.418,1.229-0.939,1.749-1.527
+				c0.188-0.205,0.401-0.358,0.563-0.58c0.58-0.802,1.058-1.698,1.34-2.714l0.009-0.043c0.009-0.017,0.017-0.034,0.017-0.043
+				l9.702-34.816C296.892,166.837,294.238,162.135,289.698,160.863z"/>
+			<path d="M96.324,330.625c2.739,4.864,8.977,10.667,23.083,10.667h85.333c4.71,0,8.533-3.823,8.533-8.533
+				s-3.823-8.533-8.533-8.533h-85.333c-5.615,0-7.834-1.297-8.218-1.988c-0.623-1.101-0.324-4.966,3.226-10.837l32-55.876
+				l4.386,15.454c1.067,3.755,4.48,6.212,8.201,6.212c0.777,0,1.553-0.111,2.338-0.333c4.531-1.289,7.168-5.999,5.88-10.539
+				l-9.924-34.961c-0.102-0.358-0.358-0.631-0.503-0.973c-0.282-0.674-0.538-1.348-0.99-1.937c-0.401-0.512-0.956-0.87-1.468-1.289
+				c-0.35-0.282-0.606-0.649-1.007-0.879c-0.017-0.009-0.034-0.009-0.051-0.017c-0.026-0.009-0.034-0.026-0.051-0.043
+				c-0.666-0.367-1.408-0.503-2.133-0.683c-0.35-0.085-0.666-0.29-1.015-0.324c-0.418-0.051-0.836,0.077-1.271,0.094
+				c-0.683,0.026-1.365-0.017-2.022,0.171c-0.017,0.009-0.043,0-0.06,0.009l-34.739,10.01c-4.531,1.297-7.142,6.033-5.845,10.556
+				c1.314,4.531,6.067,7.159,10.564,5.837l14.515-4.181l-31.514,55.04C93.329,313.294,92.126,323.193,96.324,330.625z"/>
+		</g>
+	</g>
+</g>
+</svg>
+                    <p>Orientación al usuario</p>
+                </div>
+
+                <div class="categoria" data-categoria="recoleccion">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 470 470"
+                        style="enable-background:new 0 0 470 470;" xml:space="preserve">
+                        <g>
+                            <path d="M468.353,249.443l-92.891-115.93c-1.423-1.776-3.576-2.81-5.853-2.81h-64.328c-4.143,0-7.5,3.358-7.5,7.5
+                    s3.357,7.5,7.5,7.5h60.727L455,256.767V305.5h-4.962c-4.143,0-7.5,3.358-7.5,7.5s3.357,7.5,7.5,7.5H455v15.605h-39.078
+                    c-7.396-21.99-28.191-37.879-52.641-37.879s-45.245,15.889-52.641,37.879h-28.328V75.703h22.969c4.143,0,7.5-3.358,7.5-7.5
+                    s-3.357-7.5-7.5-7.5H62.514c-2.68,0-5.155,1.43-6.495,3.75L1.005,159.739C0.347,160.879,0,162.173,0,163.489v180.116
+                    c0,4.142,3.357,7.5,7.5,7.5h13.751c-0.027,0.884-0.067,1.766-0.067,2.656c0,4.142,3.357,7.5,7.5,7.5s7.5-3.358,7.5-7.5
+                    c0-38.894,31.642-70.536,70.535-70.536s70.535,31.642,70.535,70.536c0,4.142,3.357,7.5,7.5,7.5s7.5-3.358,7.5-7.5
+                    c0-0.891-0.04-1.772-0.067-2.656h82.626h33.001c-0.042,0.881-0.067,1.766-0.067,2.656c0,30.622,24.913,55.535,55.535,55.535
+                    s55.535-24.913,55.535-55.535c0-0.891-0.026-1.775-0.067-2.656H462.5c4.143,0,7.5-3.358,7.5-7.5v-89.473
+                    C470,252.428,469.419,250.773,468.353,249.443z M106.719,268.226c-41.112,0-75.533,29.159-83.693,67.879H15V165.499l51.844-89.796
+                    h200.469v260.402h-76.901C182.252,297.385,147.831,268.226,106.719,268.226z M363.281,394.297
+                    c-22.352,0-40.535-18.184-40.535-40.535c0-22.352,18.184-40.536,40.535-40.536s40.535,18.184,40.535,40.536
+                    C403.816,376.113,385.633,394.297,363.281,394.297z" />
+                            <path d="M147.651,112.821c-1.34-2.32-3.815-3.75-6.495-3.75s-5.155,1.43-6.495,3.75l-55.014,95.287c-1.34,2.32-1.34,5.18,0,7.5
+                    s3.815,3.75,6.495,3.75h45.823l-4.611,4.81c-2.866,2.99-2.767,7.738,0.224,10.604c1.454,1.394,3.323,2.086,5.189,2.086
+                    c1.973,0,3.942-0.773,5.415-2.31l16.775-17.5c2.781-2.901,2.781-7.479,0-10.38l-16.775-17.5c-2.866-2.99-7.613-3.09-10.604-0.224
+                    c-2.99,2.866-3.09,7.614-0.224,10.604l4.611,4.81H99.133l42.023-72.787l42.023,72.787h-6.175c-4.143,0-7.5,3.358-7.5,7.5
+                    s3.357,7.5,7.5,7.5h19.165c2.68,0,5.155-1.43,6.495-3.75s1.34-5.18,0-7.5L147.651,112.821z" />
+                            <path d="M305.281,160.703c-4.143,0-7.5,3.358-7.5,7.5v65.819c0,4.142,3.357,7.5,7.5,7.5h102.663c4.143,0,7.5-3.358,7.5-7.5
+                    s-3.357-7.5-7.5-7.5h-95.163v-58.319C312.781,164.061,309.424,160.703,305.281,160.703z" />
+                            <path d="M106.719,298.226c-30.622,0-55.535,24.913-55.535,55.536c0,30.622,24.913,55.535,55.535,55.535
+                    s55.535-24.913,55.535-55.535C162.254,323.139,137.341,298.226,106.719,298.226z M106.719,394.297
+                    c-22.352,0-40.535-18.184-40.535-40.535c0-22.352,18.184-40.536,40.535-40.536s40.535,18.184,40.535,40.536
+                    C147.254,376.113,129.07,394.297,106.719,394.297z" />
+                        </g>
+
+                    </svg>
+
+                    <p>Gestión de Recolección</p>
+                </div>
+
+                <div class="categoria" data-categoria="bonificaciones">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490 490"
+                        style="enable-background:new 0 0 490 490;" xml:space="preserve">
+                        <path id="XMLID_1571_" d="M475,100.031h-65.792c10.483-15.805,13.518-34.99,8.297-53.228c-0.278-0.975-1.567-4.819-1.94-5.79
+                C408.268,22.11,392.826,8.083,373.2,2.529c-20.051-5.676-41.06-1.695-57.633,10.923L245,67.179l-70.567-53.727
+                c-16.572-12.617-37.577-16.6-57.634-10.923C97.173,8.084,81.732,22.11,74.438,41.01c-0.362,0.937-1.663,4.815-1.94,5.785
+                c-5.223,18.245-2.189,37.43,8.294,53.236H15c-8.284,0-15,6.715-15,14.999V235.02c0,8.284,6.716,14.999,15,14.999h15v224.982
+                C30,483.285,36.716,490,45,490h400c8.284,0,15-6.715,15-14.999V250.019h15c8.284,0,15-6.715,15-14.999V115.029
+                C490,106.746,483.284,100.031,475,100.031z M260,93.463l73.741-56.144c8.994-6.848,20.398-9.01,31.289-5.926
+                c10.462,2.961,18.68,10.404,22.541,20.408c0.204,0.53,0.934,2.703,1.09,3.25c2.974,10.386,0.892,21.387-5.711,30.18
+                c-6.823,9.087-17.188,14.325-28.437,14.368c-1.215,0.005-9.514,0.432-9.514,0.432h-85V93.463z M260,162.286l40.757,57.735H260
+                V162.286z M101.338,55.052c0.156-0.545,0.881-2.708,1.086-3.238c3.866-10.017,12.084-17.46,22.545-20.421
+                c10.89-3.083,22.294-0.922,31.289,5.926L230,93.463v6.568h-85c0,0-8.298-0.427-9.514-0.432
+                c-11.248-0.044-21.612-5.281-28.436-14.368C100.447,76.437,98.365,65.437,101.338,55.052z M30,220.021v-89.993h200v89.993H30z
+                    M430,460.002H60V250.019h170v104.992c0,8.284,6.716,14.999,15,14.999s15-6.715,15-14.999V250.019h61.934l30.812,43.647
+                c4.779,6.768,14.14,8.38,20.905,3.604c6.768-4.777,8.382-14.136,3.604-20.903l-18.601-26.348H430V460.002z M460,220.021H337.479
+                l-63.529-89.993H460V220.021z" />
+
+                    </svg>
+                    <p>Puntos y Bonificaciones</p>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <div class="preguntas">
+
+            <div class="contenedor-preguntas" data-categoria="cuenta">
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">Si no estoy registrado en EcoIndustry, ¿puedo usar el sistema en su totalidad?
+                        <img src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt="">
+                    </p>
+                    <p class="respuesta">No, para usar el sistema en su totalidad es necesario que estés registrado.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Cómo puedo registrarme en EcoIndustry? <img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">¡Es muy sencillo! Solo debes dirigirte a la sección "Ingresar", y después a "Crear cuenta". Luego, debes llenar el
+                        formulario con los datos solicitados, enviarlo, y ¡listo! ya estarás registrado en el sistema de
+                        EcoIndustry.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">Si ya estoy registrado, ¿cómo puedo iniciar sesión en el sistema? <img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">¡Es pan comido! Solo debes dirigite a la sección "Ingresar". Después, ingresas los datos
+                        correspondientes, y accedes. ¡De esa forma habrás ingresado correctamente!</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">Si necesito actualizar o cambiar algún dato ingresado al registrarme, ¿cómo
+                        puedo hacerlo? <img src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">En tal caso, debes comunicarte con el administrador de la página web de EcoIndustry para indicarle los cambios o actualizaciones que tengas que realizar.</p>
+                </div>
+
+            </div>
+
+            <div class="contenedor-preguntas" data-categoria="navegacion">
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Qué tipo de materiales se recolectan en EcoIndustry? ¿Por qué? <img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">En EcoIndustry recolectamos <b>plástico, vidrio, metal, cartón y papel</b>, porque estos son considerados materiales aprovechables, de tal forma que, aunque se tengan residuos hechos de alguno de estos materiales, es posible reciclarlos o reusarlos según el caso, evitando así el desperidicio y disposición de residuos que poseen en sí un potencial valor.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Cómo debo realizar el proceso de preparación y separación de los residuos, previos a la recolección? <img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">
+                        En primer lugar, es necesario que los residuos que se vayan a entregar estén en una condición tal que sean considerados aprovechables. Por lo tanto, en caso tal de que sea cartón o papel, es necesario que tales residuos se encuentren sin suciedad, manchas, o líquidos sobre ellos; deben estar lo más limpios posibles. En el caso de que sea metal o plástico es necesario que los residuos se encuentren en una condición de limpieza y daño aceptable. Finalmente, en el caso de que sea vidrio, se requiere que los residuos no posean ningún daño, ya que la manipulación de pedazos de vidrio constituye un riesgo para los encargados de la recolección, y para los que manipularán finalmente dichos residuos.
+                    <br><br> En segundo lugar, es necesario que los residuos a entregar se encuentren previamente separados con relación al tipo de material del cual están hechos. Es decir, se deben separar todos los plásticos de los vidrios, y a su vez, de los metales, y de igual forma, de los cartones y papeles. De esta manera, es posible llevar más fácilmente un control de los residuos entregados, y un mayor orden a la hora de recolectarlos.</p>
+                </div>
+
+
+
+            </div>
+
+            <div class="contenedor-preguntas" data-categoria="recoleccion">
+                
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿En qué consiste la recolección que realiza EcoIndustry?<img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">La recolección que realizamos consiste en recoger aquellos residuos sólidos
+                        aprovechables para reciclarlos, y darles nuevos usos a aquellos que así lo permitan.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">Si estoy registrado, y necesito la recolección de determinados residuos, ¿qué
+                        debo hacer?<img src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">Primero que todo, es necesario que accedas al aplicativo web de EcoIndustry, y
+                        te dirijas a la sección "Solicitar recolección". Ahí, realizaras dicho proceso, y se enviará una
+                        solicitud de recolección al sistema, la cual será respondida posteriormente, y atendida
+                        finalmente con la recolección como tal.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Cuánto tiempo toma aproximadamente la aprobación de una solicitud de
+                        recolección? <img src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">La aprobación de una solicitud de recolección puede tardar entre 2 y 4 días
+                        hábiles, dependiendo de la disponibilidad para realizarla y de la cantidad de residuos a
+                        recolectar.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Quién se encarga de recibir los residuos que tengo para recolectar?<img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">Los residuos sólidos aprovechables a recoletar los recibe un transportista
+                        contratado por nosotros mismos para realizar dicho trabajo. Él se encarga de traernos esos
+                        residuos para podeer evaluarlos y asignar un puntaje según características determinadas.</p>
+                </div>
+            </div>
+
+            <div class="contenedor-preguntas" data-categoria="bonificaciones">
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Qué son las "bonificaciones"?<img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">Las bonificaciones son aquellos "premios" o "incentivos" de carácter material,
+                        ofrecidos en el catálogo de productos, que puedes reclamar usando los puntos que has acumulado.
+                    </p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Cómo puedo llegar a obtener alguna bonificación? <img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">Es muy sencillo. Solo necesitas usar el aplicativo de EcoIndustry al acumular
+                        tus residuos solidos aprovechables, y solicitar una recolección de los mismos en tal aplicativo.
+                        Una vez recolectados y evaluados los residuos, se asignará un puntaje a tu usuario. Con ese
+                        puntaje podrás reclamar o canjear tales bonificaciones</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Qué es lo más importante a la hora de asignar un puntaje a los residuos
+                        recolectados? <img src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">Uno de los aspectos más importantes es el material del residuo aprovechable, ya que dependiendo de este, el residuo variará respecto a su valor monetario.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Cómo se determina la cantidad de puntos a la hora de asignarlos a un
+                        usuario?<img src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">La cantidad de puntos se determina a partir de unas ecuación específicas definidas donde se tiene en cuenta tanto el <b>peso</b> como el <b>material</b> del residuo recolectado.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Qué puedo hacer con esos puntos que gané?<img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">Con esos puntos puedes dirigirte a la sección del catálogo de productos y
+                        canjearlos por bonificaciones increíbles.</p>
+                </div>
+                <div class="contenedor-pregunta">
+                    <p class="pregunta">¿Dónde y cómo puedo canjear los puntos que gané por bonificaciones?<img
+                            src="https://www.svgrepo.com/show/90791/add.svg" width=16 alt=""></p>
+                    <p class="respuesta">Puedes canjear tus puntos en la sección de catálogo de productos al seleccionar
+                        el producto o bonificación que deseas obtener, y recibir el mensaje de confirmación de tal
+                        canjeo.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+        });
+
+        // Or with jQuery
+
+        $('.dropdown-trigger').dropdown();
+    </script>
+    <script>
+        const categorias = document.querySelectorAll('#categorias .categoria');
+        const contenedorPreguntas = document.querySelectorAll('.contenedor-preguntas');
+        const bigContainer = document.getElementById('big-container');
+        let categoriaActiva = null;
+        categorias.forEach((categoria) => {
+            categoria.addEventListener('click', (e) => {
+                bigContainer.style.paddingTop = '0px';
+                categorias.forEach((elemento) => {
+                    elemento.classList.remove('activa');
+                });
+                e.currentTarget.classList.toggle('activa');
+                categoriaActiva = categoria.dataset.categoria;
+
+                contenedorPreguntas.forEach((contenedor) => {
+                    if (contenedor.dataset.categoria == categoriaActiva) {
+                        contenedor.classList.add('activo');
+                    } else {
+                        contenedor.classList.remove('activo');
+                    }
+                });
+            });
+        });
+
+
+        const preguntas = document.querySelectorAll('.preguntas .contenedor-pregunta');
+        preguntas.forEach((pregunta) => {
+            pregunta.addEventListener('click', (e) => {
+                e.currentTarget.classList.toggle('activa');
+
+                const respuesta = pregunta.querySelector('.respuesta');
+                const alturaReal = respuesta.scrollHeight;
+
+                if (!respuesta.style.maxHeight) {
+                    respuesta.style.maxHeight = alturaReal + 'px';
+                } else {
+                    respuesta.style.maxHeight = null;
+                }
+
+                preguntas.forEach((elemento) => {
+                    if (pregunta !== elemento) {
+                        elemento.classList.remove('activa');
+                        elemento.querySelector('.respuesta').style.maxHeight = null;
+                    }
+                });
+
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+</head>
+
+<body>
+
+</body>
+
+</html>
