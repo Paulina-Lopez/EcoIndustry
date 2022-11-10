@@ -2,6 +2,9 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 
 # Create your models here.
+class InfoImpacto(models.Model):
+    pesoTotal = models.PositiveIntegerField(null=False)
+
 class TipoUsuario(models.Model):
     idtipousuario = models.SmallIntegerField(primary_key=True)
     desctipousuario = models.CharField(max_length=20)
