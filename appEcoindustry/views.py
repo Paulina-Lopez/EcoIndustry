@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import InfoImpacto, Comentario, TipoUsuario, Usuario, Puntos_Usuarios, Bonificacion, Agenda, Vehiculo
+from .models import Comentario, TipoUsuario, Usuario, Puntos_Usuarios, Bonificacion, Agenda, Vehiculo, InfoImpacto
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-
 
 def inicioUsuario(request, nombre):
     usuario = Usuario.objects.filter(nombreEmpresa=nombre)
@@ -19,11 +18,11 @@ def inicio(request):
             total_empresas = 0
             empresas = Usuario.objects.all()
         except:
-            return render(request, 'index.html', {'peso_total': peso_total, 'empresas_a': total_empresas, 'uso_total':uso_total-1})
+            return render(request, 'index.html', {'peso_total': peso_total, 'empresas_a': total_empresas, 'uso_total':uso_total})
         else:
             for empresa in empresas:
                 total_empresas = total_empresas + 1
-            return render(request, 'index.html', {'peso_total': peso_total, 'empresas_a': total_empresas,  'uso_total':uso_total-1})
+            return render(request, 'index.html', {'peso_total': peso_total, 'empresas_a': total_empresas,  'uso_total':uso_total})
     else:
         for peso in totalPeso:
             peso_total = peso_total + peso.pesoTotal
@@ -32,16 +31,17 @@ def inicio(request):
             total_empresas = 0
             empresas = Usuario.objects.all()
         except:
-            return render(request, 'index.html', {'peso_total': peso_total, 'empresas_a': total_empresas,  'uso_total':uso_total-1})
+            return render(request, 'index.html', {'peso_total': peso_total, 'empresas_a': total_empresas,  'uso_total':uso_total})
         else:
             for empresa in empresas:
                 total_empresas = total_empresas + 1
-            return render(request, 'index.html', {'peso_total': peso_total, 'empresas_a': total_empresas,  'uso_total':uso_total-1})
+            return render(request, 'index.html', {'peso_total': peso_total, 'empresas_a': total_empresas,  'uso_total':uso_total})
 
+def preguntas(request, nombre):
+    return render(request, 'preguntas_frec.html', {"name": nombre})
 
-def preguntas(request):
+def preguntasSinUsuario(request):
     return render(request, 'preguntas_frec.html')
-
 
 def bonos(request, nombre):
     empresas = Usuario.objects.all()
@@ -86,10 +86,10 @@ def intercambio(request):
     else:
         print("que material es ese?")
     suma = puntos + cantidad_puntos
-    o_peso = InfoImpacto(pesoTotal=formulario["peso"])
-    o_peso.save()
     o_p = Puntos_Usuarios.objects.filter(identificacion_id=id_empresa).values()
     o_p.update(cantidad=suma)
+    i_i = InfoImpacto(pesoTotal = puntos)
+    i_i.save()
     return redirect('/administrador/')
 
 
@@ -117,11 +117,10 @@ def redimir(request, nombre, puntosbono):
 def registro(request):
     formulario = request.POST.dict()
     T1 = TipoUsuario.objects.get(idtipousuario=request.POST['idtipousuario'])
-    empresa = Usuario(nombreEmpresa=formulario['nombreEmpresa'], NIT=formulario['NIT'],
-                      direccion=formulario['direccion'], correo=formulario['correo'], clave=formulario['clave'], idtipousuario=T1)
+    empresa = Usuario(nombreEmpresa=formulario['nombreEmpresa'].strip(), NIT=formulario['NIT'],
+                        direccion=formulario['direccion'].strip(), correo=formulario['correo'].strip(), clave=formulario['clave'].strip(), idtipousuario=T1)
     empresa.save()
-    empresa1 = Usuario.objects.filter(
-        nombreEmpresa=formulario['nombreEmpresa']).values()
+    empresa1 = Usuario.objects.filter(nombreEmpresa=formulario['nombreEmpresa'].strip()).values()
     empresa1 = empresa1[0]
     puntosU = Puntos_Usuarios(identificacion_id=empresa1['id'], cantidad=0)
     puntosU.save()
@@ -146,10 +145,9 @@ def agenda(request):
     idEmpresa = Usuario.objects.get(
         nombreEmpresa=request.POST['nombreEmpresa'])
     agenda = Agenda(identificacion=idEmpresa,
-                    fechaAgenda=formulario['fecha'], estado='En proceso')
+                    fechaAgenda=formulario['fecha'], estado='En proceso', placa = " ")
     agenda.save()
     return redirect('/inicio/%s' % (request.POST['nombreEmpresa']))
-
 
 def ingresar(request):
     formulario = request.POST.dict()
@@ -184,10 +182,8 @@ def ingresoIncorrecto(request, mensaje):
             return redirect('/signin/%s' % ("error"))
     return render(request, 'login.html', {"alerta": mensaje})
 
-
 def salir(request):
     return redirect('/')
-
 
 def administrador(request):
     usuario = Usuario.objects.filter(idtipousuario_id=1)
@@ -210,11 +206,10 @@ def editarUsuario(request):
     print(formulario)
     usuario = Usuario.objects.filter(nombreEmpresa=formulario["nombreEmpresa"])
     idusuario = usuario.values()[0]["id"]
-    puntos_usuario = Puntos_Usuarios.objects.filter(
-        identificacion_id=idusuario)
+    puntos_usuario = Puntos_Usuarios.objects.filter(identificacion_id=idusuario)
     puntos_usuario.update(cantidad=formulario["puntos"])
-    usuario.update(nombreEmpresa=formulario["nombreEmpresa"], NIT=formulario["NIT"],
-                   correo=formulario["correo"], clave=formulario["clave"], direccion=formulario["direccion"])
+    usuario.update(nombreEmpresa=formulario["nombreEmpresa"].strip(), NIT=formulario["NIT"],
+                   correo=formulario["correo"].strip(), clave=formulario["clave"].strip(), direccion=formulario["direccion"].strip())
     return redirect("/administrador/")
 
 
@@ -242,8 +237,7 @@ def agregarBonos(request):
             nombre=formulario['nombre'], valor=formulario['valor'], imagen=formulario['imagen'])
         bonificacion.save()
     bonos = Bonificacion.objects.all()
-    empresas = Usuario.objects.filter(idtipousuario_id=1).values()
-    return render(request, 'addBonos.html', {"empresas": empresas, "bonos": bonos})
+    return render(request, 'addBonos.html', {"bonos": bonos})
 
 
 def eliminarBonos(request, nombre):
@@ -256,24 +250,44 @@ def agendaAdmin(request):
     vehiculos = Vehiculo.objects.all()
     agendas = Agenda.objects.all()
     empresa = Usuario.objects.filter(idtipousuario_id=1)
-    return render(request, 'agenda.html',  {"agendas": agendas, "vehiculos": vehiculos, "empresas": empresa})
-
+    return render(request, 'agenda.html',  {"agendas": agendas, "vehiculos": vehiculos, "empresas":empresa})
 
 def cambiarEstadoAgenda(request):
     formulario = request.POST.dict()
     print(formulario)
-    agenda = Agenda.objects.filter(idAgenda=formulario["idAgenda"])
-    agenda.update(estado=formulario["estado"])
+    estadoViejo = formulario["estadoViejo"]
+    print(formulario)
+    agenda = Agenda.objects.filter(idAgenda = formulario["idAgenda"])
+    placaAgenda = agenda.values()[0]["placa"]
+    print(placaAgenda)
+    agenda.update(estado = formulario["estado"])
+    if(estadoViejo == "Finalizado" and formulario["estado"] == "En proceso"):
+        vehiculo = Vehiculo.objects.filter(placa = placaAgenda)
+        vehiculo.update(disponibilidad = "Ocupado")
+        print(vehiculo.values())
+        if len(list(vehiculo)) == 0:
+            agenda.update(placa = " ")
+    elif(estadoViejo == "En proceso" and formulario["estado"] == "Finalizado"):
+        vehiculo = Vehiculo.objects.filter(placa = placaAgenda)
+        vehiculo.update(disponibilidad = "Disponible")
     return redirect("/agendaAdmin/")
 
+def eliminarAgenda(request, idagenda):
+    agenda = Agenda.objects.filter(idAgenda = idagenda)
+    agenda.delete()
+    return redirect('/agendaAdmin/')
 
 def asignarVehiculo(request):
     formulario = request.POST.dict()
     print(formulario)
-    agenda = Agenda.objects.filter(idAgenda=formulario["idAgenda"])
-    agenda.update(placa=formulario["placa"])
+    agenda = Agenda.objects.filter(idAgenda = formulario["idAgenda"])
+    vehiculo = Vehiculo.objects.filter(placa = formulario["placa"])
+    disponibilidadvehiculo = vehiculo.values()[0]
+    disponibilidadvehiculo = disponibilidadvehiculo["disponibilidad"]
+    if disponibilidadvehiculo != "Ocupado":
+        agenda.update(placa = formulario["placa"])
+        vehiculo.update(disponibilidad = "Ocupado")
     return redirect("/agendaAdmin/")
-
 
 def agregarVehiculos(request):
     formulario = request.POST.dict()
@@ -284,7 +298,6 @@ def agregarVehiculos(request):
     vehiculo.save()
     return redirect("/agendaAdmin/")
 
-
 def editarVehiculo(request):
     formulario = request.POST.dict()
     print("editando")
@@ -294,12 +307,11 @@ def editarVehiculo(request):
         placa=formulario["placa"], nombreConductor=formulario["nombreConductor"], capacidad=formulario["capacidad"], disponibilidad=formulario["disponibilidad"])
     return redirect("/agendaAdmin/")
 
-
 def eliminarVehiculo(request, placa):
     vehiculo = Vehiculo.objects.filter(placa=placa)
-    try:
-        agenda = Agenda.objects.filter(placa=placa).filter(estado="En proceso")
-        agenda.update(placa=" ")
+    try: 
+        agenda = Agenda.objects.filter(placa = placa).filter(estado = "En proceso")
+        agenda.update(placa = " ")
     except:
         print("no hay agendas de este tipo")
     vehiculo.delete()

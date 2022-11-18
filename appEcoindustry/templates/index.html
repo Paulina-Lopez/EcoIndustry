@@ -21,11 +21,8 @@
                 {% if name %}
                 <li><a class="modal-trigger" href="#modal4">Agenda</a></li>
                 <li><a href="/bonos/{{name}}">Bonificaciones</a></li>
-                <li><a href="/ayuda/">Ayuda</a></li>
-                <b>
-                    <li><a class="dropdown-trigger" data-target="dropdown1">{{name}}<i
-                                class="material-icons right">arrow_drop_down</i></a></li>
-                </b>
+                <li><a href="/ayuda/{{name}}">Ayuda</a></li>
+                <b><li><a class="dropdown-trigger" data-target="dropdown1">{{name}}<i class="material-icons right">arrow_drop_down</i></a></li></b>                 
                 {% else %}
                 <li><a href="/ayuda/">Ayuda</a></li>
                 <li><a href="/bonos1/">Catálogo</a></li>
@@ -81,190 +78,198 @@
 
                         <p class="center">Papel: Periódicos, revistas y cajas de cartón. Metal: Latas, recipientes
                             metálicos y papel de aluminio. Plástico: Botellas, bolsas de compras, recipientes
-                            y envoltorios plásticos.
+                            y envoltorios plásticos. 
                             Vidrio: Botellas, frascos, recipientes y materiales compuestos de vidrio.</p>
                     </div>
                 </div>
             </div>
 
-            <div id="modal4" class="modal">
-                <div class="modal-content">
-                    <div class="container">
-                        <div class="row">
-                            <form action="/agenda/" method="POST" onsubmit="return openmodal1()">
-                                {% csrf_token %}
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <i class="material-icons prefix">account_circle</i>
-                                        {%for user in usuario%}
-                                        <input value="{{user.nombreEmpresa}}" name="nombreEmpresa" type="text" readonly>
-                                        <label>Nombre de la Empresa</label>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="input-field col s12">
-                                        <i class="material-icons prefix">event</i>
-                                        <input type="date" name="fecha">
-                                        <label for="icon_prefix">Fecha de recolección</label>
-                                    </div>
-                                    <center><button id="submit" class="modal-close btn"
-                                            style="background-color:#2d572c;">Solicitar</button></center>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="modal6" class="modal">
-                <div class="modal-content">
-                    <div class="container">
-                        <div class="row">
-                            <form action="/verCatalogo/" method="POST">
-                                {% csrf_token %}
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <i class="material-icons prefix">account_circle</i>
-                                        <select id="select" name="nombreEmpresa" autofocus>
-                                            {%for user in usuario%}
-                                            <option>{{user.nombreEmpresa}}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <label>Selecciona la empresa:</label>
-                                    </div>
-                                    <center><button href="/bonos/{{name}}" class="modal-close btn"
-                                            style="background-color:#2d572c;">Ver catálogo</button></center>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <center>
-                {% if name %}
-                <div class="container card-panel" style="width: 95%;">
-                    <div class="section black-text">
-                        <h4 class="black-text">¡Queremos conocer tu opinión!</h4>
-                        <br>
-                        <p>
-                            Para EcoIndustry es de gran importancia conocer la apreciación que tienes sobre el proceso
-                            de
-                            entrega,
-                            transformación, y redención. Así que déjanos tu experiencia, queja u/y opinión con el fin de
-                            contribuir
-                            al mejoramiento y crecimiento de nuestra empresa.
-                        </p>
-                        <br>
-                        <div class="row">
-                            <form action="/comentario/{{name}}" method="POST" onsubmit="return openmodal()">
-                                {% csrf_token %}
-                                <div class="input-field col s12">
-                                    <i class="material-icons prefix">account_circle</i>
-                                    {%for user in usuario%}
-                                    <input value="{{user.nombreEmpresa}}" name="nombreEmpresa" type="text" readonly>
-                                    <label>Nombre de la Empresa</label>
-                                    {% endfor %}
-                                </div>
-                                <div class="input-field col s12">
-                                    <i class="material-icons prefix">comment</i>
-                                    <input id="icon_prefix" type="text" name="Comentario" class="validate" required>
-                                    <label>Comentarios y sugerencias:</label>
-                                </div>
-                                <div class="input-field col s12">
-                                    <button type="submit" class="waves-effect waves-light btn"
-                                        style="background-color:#2d572c;">Enviar</button>
-                                </div>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-                {% endif %}
-
-                <br>
-                <div class="row">
-                    <h4 style="text-align: center; color:#363636;"><b>¡Conoce estos datos importantes!</b></h4>
-                    <br>
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h3 class="center">
-                                <font class="fas fa-recycle" style="color:#2d572c;"><b>{{empresas_a}} empresas</b>
-                                </font>
-                            </h3>
-                            <h5 class="center" style="color:#2d572c;">inscritas en el aplicativo <br> de EcoIndustry
-                            </h5>
-
-                            <p class="center">Cada empresa que se inscribe en el aplicativo web se hace
-                                consciente de la ayuda e impacto que EcoIndustry genera tanto para las empresas que usan
-                                el sistema como para el medio ambiente y ecosistemas.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h3 class="center">
-                                <font class="fas fa-recycle" style="color:#2d572c;"><b>{{peso_total}} kg</b></font>
-                            </h3>
-                            <h5 class="center" style="color:#2d572c;">de residuos aprovechables <br> recolectados...
-                            </h5>
-
-                            <p class="center">Parte de estos residuos aprovechados son usados por EcoIndustry para la
-                                creación
-                                de increíbles incentivos
-                                para las empresas inscritas y no aportan ni generan huella de carbono alguna durante su
-                                proceso
-                                de producción.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col s12 m4">
-                        <div class="icon-block">
-                            <h3 class="center">
-                                <font class="fas fa-recycle" style="color:#2d572c;"><b>+{{uso_total}} veces</b></font>
-                            </h3>
-                            <h5 class="center" style="color:#2d572c;">en las que se ha usado <br> EcoIndustry</h5>
-
-                            <p class="center">Cada vez que se usa el aplicativo de EcoIndustry se está asegurando que
-                                los
-                                residuos entregados
-                                serán finalmente aprovechados con el fin de reciclarlos y reducir en gran manera la
-                                cantidad de
-                                residuos desechados.
-                            </p>
-                        </div>
-                    </div>
-                </div>
         </div>
     </div>
 
-    <br><br>
-    <footer class="page-footer" style="background-color: #363636;">
-        <div class="container">
-            <div class="row">
-                <div class="col l6 s12">
-                    <h5 class="white-text">EcoIndustry</h5>
-                    <p class="grey-text text-lighten-4">¡Intenta dejar la tierra mejor de como la encontraste!</p>
-                </div>
-                <div class="col l4 offset-l2 s12">
-                    <ul>
-                        {% if name %}
-                        <li><a class="grey-text text-lighten-3" href="/">Inicio</a></li>
-                        <li><a class="grey-text text-lighten-3" href="/verCatalogo/">Catálogo</a></li>
-                        {% else %}
-                        <li><a class="grey-text text-lighten-3" href="/verCatalogo/">Catálogo</a></li>
-                        <li><a class="grey-text text-lighten-3" href="/signin/">Ingresar</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright">
+    <div id="modal4" class="modal">
+        <div class="modal-content">
             <div class="container">
-                © 2022 Copyright EcoIndustry
+                <div class="row">
+                    <form action="/agenda/" method="POST" onsubmit="return openmodal1()">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                {%for user in usuario%}
+                                <input value="{{user.nombreEmpresa}}" name="nombreEmpresa" type="text" readonly>
+                                <label>Nombre de la Empresa</label>
+                                {% endfor %}
+                            </div> 
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">event</i>
+                                <input type="date" name="fecha">
+                                <label for="icon_prefix">Fecha de recolección</label>
+                            </div>
+                            <center><button id="submit" class="modal-close btn"
+                                    style="background-color:#2d572c;">Solicitar</button></center>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
 
+    <div id="modal6" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="row">
+                    <form action="/verCatalogo/" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">account_circle</i>
+                                <select id="select" name="nombreEmpresa" autofocus>
+                                    {%for user in usuario%}
+                                    <option>{{user.nombreEmpresa}}</option>
+                                    {% endfor %}
+                                </select>
+                                <label>Selecciona la empresa:</label>
+                            </div>
+                            <center><button href="/bonos/{{name}}" class="modal-close btn"
+                                    style="background-color:#2d572c;">Ver catálogo</button></center>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if peso_total %}
+    <br>
+    <div class="row">
+        <h4 style="text-align: center; color:#363636;"><b>¡Conoce estos datos importantes!</b></h4>
+        <br>
+        <div class="col s12 m4">
+            <div class="icon-block">
+                <h3 class="center">
+                    <font class="fas fa-recycle" style="color:#2d572c;"><b>{{empresas_a}} empresas</b>
+                    </font>
+                </h3>
+                <h5 class="center" style="color:#2d572c;">inscritas en el aplicativo <br> de EcoIndustry
+                </h5>
+
+                <p class="center">Cada empresa que se inscribe en el aplicativo web se hace
+                    consciente de la ayuda e impacto que EcoIndustry genera tanto para las empresas que usan
+                    el sistema como para el medio ambiente y ecosistemas.
+                </p>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="icon-block">
+                <h3 class="center">
+                    <font class="fas fa-recycle" style="color:#2d572c;"><b>{{peso_total}} kg</b></font>
+                </h3>
+                <h5 class="center" style="color:#2d572c;">de residuos aprovechables <br> recolectados...
+                </h5>
+
+                <p class="center">Parte de estos residuos aprovechados son usados por EcoIndustry para la
+                    creación
+                    de increíbles incentivos
+                    para las empresas inscritas y no aportan ni generan huella de carbono alguna durante su
+                    proceso
+                    de producción.
+                </p>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="icon-block">
+                {% if uso_total == 1 %}
+                    <h3 class="center">
+                        <font class="fas fa-recycle" style="color:#2d572c;"><b>{{uso_total}} vez</b></font>
+                    </h3>
+                    <h5 class="center" style="color:#2d572c;">se ha usado la aplicación<br> de EcoIndustry</h5>
+                {% else %}
+                    <h3 class="center">
+                        <font class="fas fa-recycle" style="color:#2d572c;"><b>{{uso_total}} veces</b></font>
+                    </h3>
+                    <h5 class="center" style="color:#2d572c;">se ha usado la aplicación <br> de EcoIndustry</h5>
+                {% endif %}
+                <p class="center">Cada vez que se usa el aplicativo de EcoIndustry se está asegurando que
+                    los
+                    residuos entregados
+                    serán finalmente aprovechados con el fin de reciclarlos y reducir en gran manera la
+                    cantidad de
+                    residuos desechados.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endif %}
+
+    <center>
+        {% if name %}
+        <div class="container card-panel" style="width: 95%;">
+            <div class="section black-text">
+                <h4 class="black-text">¡Queremos conocer tu opinión!</h4>
+                <br>
+                <p>
+                    Para EcoIndustry es de gran importancia conocer la apreciación que tienes sobre el proceso de
+                    entrega,
+                    transformación, y redención. Así que déjanos tu experiencia, queja u/y opinión con el fin de
+                    contribuir
+                    al mejoramiento y crecimiento de nuestra empresa.
+                </p>
+                <br>
+                <div class="row">
+                    <form action="/comentario/{{name}}" method="POST" onsubmit="return openmodal()">
+                        {% csrf_token %}
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+                            {%for user in usuario%}
+                            <input value="{{user.nombreEmpresa}}" name="nombreEmpresa" type="text" readonly>
+                            <label>Nombre de la Empresa</label>
+                            {% endfor %}
+                        </div>                               
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">comment</i>
+                            <input id="icon_prefix" type="text" name="Comentario" class="validate" required>
+                            <label>Comentarios y sugerencias:</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <button type="submit" class="waves-effect waves-light btn"
+                                style="background-color:#2d572c;">Enviar</button>
+                        </div>
+                </div>
+            </div>
+            </form>
+        </div>
+        {% endif %}
+
+        <br><br>
+        <footer class="page-footer" style="background-color: #363636;">
+            <div class="container">
+              <div class="row">
+                <div class="col l6 s12">
+                  <h5 class="white-text">EcoIndustry</h5>
+                  <p class="grey-text text-lighten-4">¡Intenta dejar la tierra mejor de como la encontraste!</p>
+                </div>
+                <div class="col l4 offset-l2 s12">                  <ul>
+                    {% if name %}
+                    <li><a class="grey-text text-lighten-3" href="/">Inicio</a></li>
+                    <li><a class="grey-text text-lighten-3" href="/verCatalogo/">Catálogo</a></li>
+                    {% else %}
+                    <li><a class="grey-text text-lighten-3" href="/verCatalogo/">Catálogo</a></li>
+                    <li><a class="grey-text text-lighten-3" href="/signin/">Ingresar</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="footer-copyright">
+              <div class="container">
+              © 2022 Copyright EcoIndustry
+              </div>
+            </div>
+          </footer>
+              
 
 
     </center>
@@ -298,14 +303,14 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.dropdown-trigger');
             var instances = M.Dropdown.init(elems);
-        });
-
-        // Or with jQuery
-
-        $('.dropdown-trigger').dropdown();
+            });
+        
+            // Or with jQuery
+        
+            $('.dropdown-trigger').dropdown();
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

@@ -29,6 +29,8 @@
         </div>
     </nav>
 
+
+
     <ul id='dropdown1' class='dropdown-content'>
         <li><a href="/signout/">Salir</a></li>
     </ul>
@@ -104,15 +106,15 @@
                         <td>{{ agenda.placa }}</td>
                     {% endif %}
                     <td><button type="button" style="background-color:#2d572c;" class="btn modal-trigger" href="#modal0"
-                        onclick="return openmodal1('{{ agenda.idAgenda }}')">
+                        onclick="return openmodal1('{{ agenda.idAgenda }}', '{{agenda.estado}}')">
                         Editar estado</button></td>
                     
                     <td><button type="button" style="background-color:#2d572c;" class="btn modal-trigger" href="#modal1"
                             onclick="return openmodal2('{{ agenda.idAgenda }}')">
                             Asignar vehiculo</button>
                     </td>
-                    <td><a onclick="alert('Recuerda reagendar esta solicitud con el usuario')" class="btn red darken-4"
-                            href="/eliminar/{{empresa.nombreEmpresa}}">Eliminar</a></td>
+                    <td><a onclick="alert('Recuerda reagendar esta solicitud con el usuario {{ empresa.nombreEmpresa }} ')" class="btn red darken-4"
+                            href="/eliminarAgenda/{{ agenda.idAgenda }}">Eliminar</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -126,6 +128,7 @@
                 <div class="row">
                     <div class="input-field col s6" >
                         <input id="idagenda1" type="hidden" name="idAgenda" class="form-control" autofocus>
+                        <input id="idestadoViejo" type="hidden" name="estadoViejo" class="form-control" autofocus>
                         <select type="text" name="estado" id="idestado" autofocus>
                             <option value="En proceso">En Proceso</option>
                             <option value="Finalizado">Finalizado</option>
@@ -320,8 +323,9 @@
         }
     </script>
     <script>
-        function openmodal1(id) {
+        function openmodal1(id, estado) {
             document.getElementById("idagenda1").value = id;
+            document.getElementById("idestadoViejo").value = estado;
         }
     </script>
     <script>

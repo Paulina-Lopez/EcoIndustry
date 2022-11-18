@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from appEcoindustry.views import preguntas, agregarBonos, agregarVehiculos, agendaAdmin, comentario, editarBonos, eliminarBonos, inicio, inicioUsuario, bonos, bonosSinUsuario, intercambio, redimir, registro, comentario, agenda, ingresar, administrador, salir, editarUsuario, eliminarUsuario, ingresoIncorrecto, eliminarVehiculo,editarVehiculo, cambiarEstadoAgenda, asignarVehiculo
+from appEcoindustry.views import preguntas, agregarBonos, agregarVehiculos, agendaAdmin, comentario, editarBonos, eliminarBonos, inicio, inicioUsuario, bonos, bonosSinUsuario, intercambio, redimir, registro, comentario, agenda, ingresar, administrador, salir, editarUsuario, eliminarUsuario, ingresoIncorrecto, eliminarVehiculo,editarVehiculo, cambiarEstadoAgenda, eliminarAgenda,asignarVehiculo, preguntasSinUsuario
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,8 +29,10 @@ urlpatterns = [
     path('addVehiculos/', agregarVehiculos),
     path('eliminarVehiculo/<placa>', eliminarVehiculo),
     path('editarVehiculo/', editarVehiculo),
-    path('ayuda/', preguntas),
+    path('ayuda/', preguntasSinUsuario),
+    path('ayuda/<nombre>', preguntas),
     path('cambiarEstadoAgenda/', cambiarEstadoAgenda),
+    path('eliminarAgenda/<int:idagenda>', eliminarAgenda),
     path('asignarVehiculo/', asignarVehiculo),
 ]
 
